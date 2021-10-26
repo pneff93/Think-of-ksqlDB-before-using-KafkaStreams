@@ -57,6 +57,7 @@ services:
       KSQL_BOOTSTRAP_SERVERS: broker:29092
       KSQL_HOST_NAME: ksqldb-server
       KSQL_LISTENERS: "http://0.0.0.0:8088"
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 
   ksqldb-cli:
     image: confluentinc/cp-ksqldb-cli:6.2.0

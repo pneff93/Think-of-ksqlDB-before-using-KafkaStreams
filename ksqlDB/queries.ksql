@@ -1,0 +1,46 @@
+CREATE STREAM SENSOR_DATA_RAW(
+    "sensorId" VARCHAR,
+    "value" ARRAY<STRUCT<"data" VARCHAR, "value" DOUBLE>>,
+    "timestamp" VARCHAR
+) WITH (
+    KAFKA_TOPIC = 'sensor-data-raw',
+    VALUE_FORMAT = 'AVRO',
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorData'
+);
+
+-- We need to transform from Fahrenheit to Celsius
+CREATE STREAM SENSOR_DATA_TRANSFORMED
+WITH (
+    KAFKA_TOPIC = 'sensor-data-transformed',
+    VALUE_FORMAT = 'AVRO',
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorDataTransformed'
+) AS SELECT
+    "sensorId",
+    TRANSFORM("value", (value) =>
+        STRUCT(
+        "data" := value->"data",
+        "value" :=
+            CASE WHEN value->"data" = 'temperature'
+            THEN (value->"value" - 32) / 1.8
+            ELSE value->"value" END
+        )
+    ) AS "value",
+    "timestamp"
+    FROM SENSOR_DATA_RAW;
+
+-- We want to have data per value
+CREATE STREAM SENSOR_DATA_PER_VALUE
+WITH (
+    KAFKA_TOPIC = 'sensor-data-per-value',
+    VALUE_FORMAT = 'AVRO',
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorDataPerValue'
+) AS SELECT
+    "sensorId" + EXPLODE("value")->"data" AS "sensorIdData",
+    EXPLODE("value")->"data" AS "data",
+    EXPLODE("value")->"value" AS "value",
+    "timestamp"
+    FROM SENSOR_DATA_TRANSFORMED;
+
+evtl nicht diese kopplung sondern einfach doppeltes group by :sonnenbrille
+
+Es fehlt nur noch history
