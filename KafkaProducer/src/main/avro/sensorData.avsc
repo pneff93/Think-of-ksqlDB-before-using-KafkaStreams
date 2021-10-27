@@ -16,12 +16,16 @@
           "type": "record",
           "fields": [
             {
-              "name": "data",
+              "name": "type",
               "type": "string"
             },
             {
               "name": "value",
               "type": "float"
+            },
+            {
+              "name": "unit",
+              "type": "string"
             }
           ]
         }

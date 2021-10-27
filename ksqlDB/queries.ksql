@@ -1,12 +1,13 @@
 CREATE STREAM SENSOR_DATA_RAW(
     "sensorId" VARCHAR,
-    "value" ARRAY<STRUCT<"data" VARCHAR, "value" DOUBLE>>,
+    "value" ARRAY<STRUCT<"type" VARCHAR, "value" DOUBLE, "unit" VARCHAR>>,
     "timestamp" VARCHAR
 ) WITH (
     KAFKA_TOPIC = 'sensor-data-raw',
     VALUE_FORMAT = 'AVRO',
     VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorData'
 );
+
 
 -- We need to transform from Fahrenheit to Celsius
 CREATE STREAM SENSOR_DATA_TRANSFORMED
@@ -18,15 +19,20 @@ WITH (
     "sensorId",
     TRANSFORM("value", (value) =>
         STRUCT(
-        "data" := value->"data",
+        "type" := value->"type",
         "value" :=
-            CASE WHEN value->"data" = 'temperature'
+            CASE WHEN value->"type" = 'temperature' AND value->"unit" = 'Fahrenheit'
             THEN (value->"value" - 32) / 1.8
-            ELSE value->"value" END
+            ELSE value->"value" END,
+        "unit" :=
+            CASE WHEN value->"type" = 'temperature' AND value->"unit" = 'Fahrenheit'
+            THEN 'Celsius'
+            ELSE value->"unit" END
         )
     ) AS "value",
     "timestamp"
     FROM SENSOR_DATA_RAW;
+
 
 -- We want to have data per value
 CREATE STREAM SENSOR_DATA_PER_VALUE
@@ -35,9 +41,10 @@ WITH (
     VALUE_FORMAT = 'AVRO',
     VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorDataPerValue'
 ) AS SELECT
-    "sensorId" + EXPLODE("value")->"data" AS "sensorIdData",
-    EXPLODE("value")->"data" AS "data",
-    EXPLODE("value")->"value" AS "value",
+    "sensorId",
+    EXPLODE("value")->"type" AS "type",
+    ROUND(EXPLODE("value")->"value", 1) AS "value",
+    EXPLODE("value")->"unit" AS "unit",
     "timestamp"
     FROM SENSOR_DATA_TRANSFORMED;
 

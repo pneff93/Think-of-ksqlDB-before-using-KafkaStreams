@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class value_record extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -2269578592783946590L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"value_record\",\"namespace\":\"com.kafkaSummitEurope\",\"fields\":[{\"name\":\"data\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":\"float\"}]}");
+  private static final long serialVersionUID = -4694537839649257541L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"value_record\",\"namespace\":\"com.kafkaSummitEurope\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":\"float\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -71,8 +71,9 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
     return DECODER.decode(b);
   }
 
-  @Deprecated public java.lang.String data;
+  @Deprecated public java.lang.String type;
   @Deprecated public float value;
+  @Deprecated public java.lang.String unit;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -83,12 +84,14 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
 
   /**
    * All-args constructor.
-   * @param data The new value for data
+   * @param type The new value for type
    * @param value The new value for value
+   * @param unit The new value for unit
    */
-  public value_record(java.lang.String data, java.lang.Float value) {
-    this.data = data;
+  public value_record(java.lang.String type, java.lang.Float value, java.lang.String unit) {
+    this.type = type;
     this.value = value;
+    this.unit = unit;
   }
 
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
@@ -96,8 +99,9 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return data;
+    case 0: return type;
     case 1: return value;
+    case 2: return unit;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -106,27 +110,28 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: data = value$ != null ? value$.toString() : null; break;
+    case 0: type = value$ != null ? value$.toString() : null; break;
     case 1: value = (java.lang.Float)value$; break;
+    case 2: unit = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   /**
-   * Gets the value of the 'data' field.
-   * @return The value of the 'data' field.
+   * Gets the value of the 'type' field.
+   * @return The value of the 'type' field.
    */
-  public java.lang.String getData() {
-    return data;
+  public java.lang.String getType() {
+    return type;
   }
 
 
   /**
-   * Sets the value of the 'data' field.
+   * Sets the value of the 'type' field.
    * @param value the value to set.
    */
-  public void setData(java.lang.String value) {
-    this.data = value;
+  public void setType(java.lang.String value) {
+    this.type = value;
   }
 
   /**
@@ -144,6 +149,23 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
    */
   public void setValue(float value) {
     this.value = value;
+  }
+
+  /**
+   * Gets the value of the 'unit' field.
+   * @return The value of the 'unit' field.
+   */
+  public java.lang.String getUnit() {
+    return unit;
+  }
+
+
+  /**
+   * Sets the value of the 'unit' field.
+   * @param value the value to set.
+   */
+  public void setUnit(java.lang.String value) {
+    this.unit = value;
   }
 
   /**
@@ -187,8 +209,9 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<value_record>
     implements org.apache.avro.data.RecordBuilder<value_record> {
 
-    private java.lang.String data;
+    private java.lang.String type;
     private float value;
+    private java.lang.String unit;
 
     /** Creates a new Builder */
     private Builder() {
@@ -201,13 +224,17 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
      */
     private Builder(com.kafkaSummitEurope.value_record.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.data)) {
-        this.data = data().deepCopy(fields()[0].schema(), other.data);
+      if (isValidValue(fields()[0], other.type)) {
+        this.type = data().deepCopy(fields()[0].schema(), other.type);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.value)) {
         this.value = data().deepCopy(fields()[1].schema(), other.value);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
+      }
+      if (isValidValue(fields()[2], other.unit)) {
+        this.unit = data().deepCopy(fields()[2].schema(), other.unit);
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
     }
 
@@ -217,52 +244,56 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
      */
     private Builder(com.kafkaSummitEurope.value_record other) {
       super(SCHEMA$);
-      if (isValidValue(fields()[0], other.data)) {
-        this.data = data().deepCopy(fields()[0].schema(), other.data);
+      if (isValidValue(fields()[0], other.type)) {
+        this.type = data().deepCopy(fields()[0].schema(), other.type);
         fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.value)) {
         this.value = data().deepCopy(fields()[1].schema(), other.value);
         fieldSetFlags()[1] = true;
       }
+      if (isValidValue(fields()[2], other.unit)) {
+        this.unit = data().deepCopy(fields()[2].schema(), other.unit);
+        fieldSetFlags()[2] = true;
+      }
     }
 
     /**
-      * Gets the value of the 'data' field.
+      * Gets the value of the 'type' field.
       * @return The value.
       */
-    public java.lang.String getData() {
-      return data;
+    public java.lang.String getType() {
+      return type;
     }
 
 
     /**
-      * Sets the value of the 'data' field.
-      * @param value The value of 'data'.
+      * Sets the value of the 'type' field.
+      * @param value The value of 'type'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.value_record.Builder setData(java.lang.String value) {
+    public com.kafkaSummitEurope.value_record.Builder setType(java.lang.String value) {
       validate(fields()[0], value);
-      this.data = value;
+      this.type = value;
       fieldSetFlags()[0] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'data' field has been set.
-      * @return True if the 'data' field has been set, false otherwise.
+      * Checks whether the 'type' field has been set.
+      * @return True if the 'type' field has been set, false otherwise.
       */
-    public boolean hasData() {
+    public boolean hasType() {
       return fieldSetFlags()[0];
     }
 
 
     /**
-      * Clears the value of the 'data' field.
+      * Clears the value of the 'type' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.value_record.Builder clearData() {
-      data = null;
+    public com.kafkaSummitEurope.value_record.Builder clearType() {
+      type = null;
       fieldSetFlags()[0] = false;
       return this;
     }
@@ -306,13 +337,54 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
       return this;
     }
 
+    /**
+      * Gets the value of the 'unit' field.
+      * @return The value.
+      */
+    public java.lang.String getUnit() {
+      return unit;
+    }
+
+
+    /**
+      * Sets the value of the 'unit' field.
+      * @param value The value of 'unit'.
+      * @return This builder.
+      */
+    public com.kafkaSummitEurope.value_record.Builder setUnit(java.lang.String value) {
+      validate(fields()[2], value);
+      this.unit = value;
+      fieldSetFlags()[2] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'unit' field has been set.
+      * @return True if the 'unit' field has been set, false otherwise.
+      */
+    public boolean hasUnit() {
+      return fieldSetFlags()[2];
+    }
+
+
+    /**
+      * Clears the value of the 'unit' field.
+      * @return This builder.
+      */
+    public com.kafkaSummitEurope.value_record.Builder clearUnit() {
+      unit = null;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public value_record build() {
       try {
         value_record record = new value_record();
-        record.data = fieldSetFlags()[0] ? this.data : (java.lang.String) defaultValue(fields()[0]);
+        record.type = fieldSetFlags()[0] ? this.type : (java.lang.String) defaultValue(fields()[0]);
         record.value = fieldSetFlags()[1] ? this.value : (java.lang.Float) defaultValue(fields()[1]);
+        record.unit = fieldSetFlags()[2] ? this.unit : (java.lang.String) defaultValue(fields()[2]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -345,9 +417,11 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
   @Override public void customEncode(org.apache.avro.io.Encoder out)
     throws java.io.IOException
   {
-    out.writeString(this.data);
+    out.writeString(this.type);
 
     out.writeFloat(this.value);
+
+    out.writeString(this.unit);
 
   }
 
@@ -356,19 +430,25 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
   {
     org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
     if (fieldOrder == null) {
-      this.data = in.readString();
+      this.type = in.readString();
 
       this.value = in.readFloat();
 
+      this.unit = in.readString();
+
     } else {
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < 3; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
-          this.data = in.readString();
+          this.type = in.readString();
           break;
 
         case 1:
           this.value = in.readFloat();
+          break;
+
+        case 2:
+          this.unit = in.readString();
           break;
 
         default:
