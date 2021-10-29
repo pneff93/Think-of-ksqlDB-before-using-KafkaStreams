@@ -20,17 +20,17 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
     implementation("org.apache.logging.log4j:log4j-api-kotlin:1.0.0")
     implementation("org.apache.logging.log4j:log4j-core:2.12.0")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.12.0")
-    implementation("io.ktor:ktor-server-netty:1.2.2")
-    implementation ("com.google.code.gson:gson:2.8.8")
+//    implementation("io.ktor:ktor-server-netty:1.2.2")
+//    implementation ("com.google.code.gson:gson:2.8.8")
 
-//    implementation("org.apache.kafka:kafka-streams:2.8.0")
+    implementation("org.apache.kafka:kafka-streams:2.8.0")
 //    implementation("org.apache.avro:avro:1.10.2")
     implementation("io.confluent:kafka-avro-serializer:6.2.0")
-//    implementation("io.confluent:kafka-streams-avro-serde:5.2.1")
+    implementation("io.confluent:kafka-streams-avro-serde:5.2.1")
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
