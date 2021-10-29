@@ -54,7 +54,7 @@ set 'ksql.suppress.enabled'='true';
 CREATE TABLE SENSOR_DATA_AGGREGATION
 WITH (
     KAFKA_TOPIC = 'sensor-data-aggregation',
-    KEY_FORMAT = 'JSON',
+    KEY_FORMAT = 'AVRO',
     VALUE_FORMAT = 'AVRO',
     VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorDataAggregation'
 ) AS SELECT
@@ -68,3 +68,22 @@ WITH (
     WINDOW TUMBLING (SIZE 10 SECONDS)
     GROUP BY "sensorId", "type"
     EMIT FINAL;
+
+-- All in one
+set 'ksql.suppress.enabled'='true';
+CREATE STREAM TEST
+WITH (
+    KAFKA_TOPIC = 'test',
+    VALUE_FORMAT = 'AVRO',
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.test'
+) AS SELECT
+    "sensorId",
+    LATEST_BY_OFFSET(EXPLODE("value")->"type") AS "type",
+    AVG(CASE WHEN EXPLODE("value")->"type" = 'temperature' AND EXPLODE("value")->"unit" = 'Fahrenheit'
+         THEN ROUND((EXPLODE("value")->"value" - 32) / 1.8, 1)
+         ELSE ROUND(EXPLODE("value")->"value", 1)
+         END) AS "value",
+    LATEST_BY_OFFSET(EXPLODE("value")->"unit") AS "unit",
+    "timestamp"
+    FROM SENSOR_DATA_RAW
+     GROUP BY "sensorId" EMIT CHANGES;

@@ -1,5 +1,4 @@
 import org.gradle.jvm.tasks.Jar
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.5.10"
@@ -27,13 +26,12 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:1.2.2")
     implementation ("com.google.code.gson:gson:2.8.8")
 
-//    implementation("org.apache.kafka:kafka-streams:2.8.0")
-//    implementation("org.apache.avro:avro:1.10.2")
     implementation("io.confluent:kafka-avro-serializer:6.2.0")
-//    implementation("io.confluent:kafka-streams-avro-serde:5.2.1")
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     baseName = "fatApp"
     manifest {
         attributes["Main-Class"] = application.mainClass
@@ -46,6 +44,6 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.withType<KotlinCompile> {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
 }

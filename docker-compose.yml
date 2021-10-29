@@ -66,3 +66,11 @@ services:
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
+
+  kafkaProducerSummit22:
+    image: kafkaproducersummit22:0.1.0
+    build: ./KafkaProducer
+    container_name: kafkaProducer
+    depends_on:
+      - broker
+      - schema-registry
