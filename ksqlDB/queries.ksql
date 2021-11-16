@@ -1,5 +1,5 @@
 CREATE STREAM SENSOR_DATA_RAW(
-    "sensorId" VARCHAR,
+    "sensorId" VARCHAR KEY,
     "value" ARRAY<STRUCT<"type" VARCHAR, "value" DOUBLE, "unit" VARCHAR>>,
     "timestamp" VARCHAR
 ) WITH (
@@ -14,7 +14,7 @@ CREATE STREAM SENSOR_DATA_TRANSFORMED
 WITH (
     KAFKA_TOPIC = 'sensor-data-transformed',
     VALUE_FORMAT = 'AVRO',
-    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorDataTransformed'
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorData'
 ) AS SELECT
     "sensorId",
     TRANSFORM("value", (value) =>
@@ -31,7 +31,8 @@ WITH (
         )
     ) AS "value",
     "timestamp"
-    FROM SENSOR_DATA_RAW;
+    FROM SENSOR_DATA_RAW
+    PARTITION BY "sensorId";
 
 
 -- We want to have data per value
@@ -46,7 +47,8 @@ WITH (
     ROUND(EXPLODE("value")->"value", 1) AS "value",
     EXPLODE("value")->"unit" AS "unit",
     "timestamp"
-    FROM SENSOR_DATA_TRANSFORMED;
+    FROM SENSOR_DATA_TRANSFORMED
+    PARTITION BY "sensorId";
 
 
 -- We finally aggregate
