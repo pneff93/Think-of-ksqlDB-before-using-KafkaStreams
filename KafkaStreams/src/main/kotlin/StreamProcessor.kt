@@ -10,19 +10,15 @@ import org.apache.kafka.streams.kstream.Produced
 
 class StreamProcessor(properties: StreamProperties) {
 
-    var streams : KafkaStreams
+    val streams: KafkaStreams
     private val serde: SpecificAvroSerde<SensorData>
 
     init {
 
-
-//        val config = mapOf(
-//            AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG to properties.configureProperties()
-//                .getProperty("schema.registry.url")
-//        )
         val registryConfig = mutableMapOf<String, String>()
         registryConfig[AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG] = properties.configureProperties()
             .getProperty("schema.registry.url")
+
         serde = SpecificAvroSerde<SensorData>()
         serde.configure(registryConfig, false)
 

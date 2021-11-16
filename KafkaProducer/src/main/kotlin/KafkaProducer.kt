@@ -9,12 +9,12 @@ import java.util.*
 class KafkaProducer {
 
     private val logger = logger(javaClass.name)
+    private val gson = Gson()
 
     fun produceEvents(properties: ProducerProperties, data: List<String>): Thread {
 
         val thread = Thread {
 
-            val gson = Gson()
             val kafkaProducer = KafkaProducer<String, SensorData>(properties.configureProperties())
 
             Thread.sleep(10000)
