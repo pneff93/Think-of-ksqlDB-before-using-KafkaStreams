@@ -6,7 +6,6 @@ import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.*
-import org.apache.kafka.streams.kstream.internals.suppress.StrictBufferConfigImpl
 import org.apache.logging.log4j.kotlin.logger
 import java.time.Duration
 
@@ -17,7 +16,7 @@ class StreamProcessor(properties: StreamProperties) {
     private val serdeSingleData: SpecificAvroSerde<SensorDataPerValue>
     private val serdePreAggregatedData: SpecificAvroSerde<SensorDataPreAggregation>
     private val serdeAggregatedData: SpecificAvroSerde<SensorDataAggregation>
-    private val serdeAggregationKey: SpecificAvroSerde<SensorDataAggregationKey>
+    private val serdeAggregatedKey: SpecificAvroSerde<SensorDataAggregationKey>
 
     init {
 
@@ -37,8 +36,8 @@ class StreamProcessor(properties: StreamProperties) {
         serdeAggregatedData = SpecificAvroSerde<SensorDataAggregation>()
         serdeAggregatedData.configure(registryConfig, false)
 
-        serdeAggregationKey = SpecificAvroSerde<SensorDataAggregationKey>()
-        serdeAggregationKey.configure(registryConfig, false)
+        serdeAggregatedKey = SpecificAvroSerde<SensorDataAggregationKey>()
+        serdeAggregatedKey.configure(registryConfig, true) // true because it's a key
 
         streams = KafkaStreams(createTopology(), properties.configureProperties())
     }
@@ -46,7 +45,7 @@ class StreamProcessor(properties: StreamProperties) {
     private fun createTopology(): Topology {
 
         val processor = StreamsBuilder()
-        val logger = logger("Streams Processor")
+
 
         val s1: KStream<String, SensorDataPerValue> = processor
             .stream(
@@ -57,31 +56,27 @@ class StreamProcessor(properties: StreamProperties) {
             .flatMapValues { value -> splitDataPoints(value) }  // One event per data point
 
 
-        val s2: KGroupedStream<String, SensorDataPerValue> = s1
-            .selectKey { _, value -> value.getType() }
+        val s2: KGroupedStream<SensorDataAggregationKey, SensorDataPerValue> = s1
             .groupBy(
-                { _, value -> value.getType() },
-//                { _, value -> SensorDataAggregationKey(value.getSensorId(), value.getType()) },
-                Grouped.with(Serdes.String(), serdeSingleData)
+                { _, value -> SensorDataAggregationKey(value.getSensorId(), value.getType()) },
+                Grouped.with(serdeAggregatedKey, serdeSingleData)
             )
 
-
-        val s3: KStream<Windowed<String>, SensorDataAggregation> = s2
+        val s3 = s2
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofSeconds(10)))
             .aggregate(
                 { SensorDataPreAggregation(0.0, 0, "", "") },   // dummy initializer
                 { _, value, aggregate -> aggregateEvents(value, aggregate) },
-                Materialized.with(Serdes.String(), serdePreAggregatedData)
+                Materialized.with(serdeAggregatedKey, serdePreAggregatedData)
             )
             .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
             .toStream()
-            .peek { _, value -> logger.info("$value") }
             .mapValues { value -> calculateAverage(value) }
 
         s3
             .to(
                 "t2",
-                Produced.with(WindowedSerdes.TimeWindowedSerde(), serdeAggregatedData)
+                Produced.with(WindowedSerdes.TimeWindowedSerde<>, serdeAggregatedData)
             )
 
         return processor.build()
