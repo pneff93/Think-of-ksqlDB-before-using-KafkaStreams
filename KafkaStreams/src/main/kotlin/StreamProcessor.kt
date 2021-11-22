@@ -8,6 +8,7 @@ import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.*
 import org.apache.logging.log4j.kotlin.logger
 import java.time.Duration
+import kotlin.math.roundToInt
 
 class StreamProcessor(properties: StreamProperties) {
 
@@ -40,6 +41,7 @@ class StreamProcessor(properties: StreamProperties) {
         serdeAggregatedKey.configure(registryConfig, true) // true because it's a key
 
         streams = KafkaStreams(createTopology(), properties.configureProperties())
+        logger("Kafka Streams").info(createTopology().describe())
     }
 
     private fun createTopology(): Topology {
@@ -62,7 +64,7 @@ class StreamProcessor(properties: StreamProperties) {
                 Grouped.with(serdeAggregatedKey, serdeSingleData)
             )
 
-        val s3 = s2
+        val s3: KStream<Windowed<SensorDataAggregationKey>, SensorDataAggregation> = s2
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofSeconds(10)))
             .aggregate(
                 { SensorDataPreAggregation(0.0, 0, "", "") },   // dummy initializer
@@ -76,17 +78,16 @@ class StreamProcessor(properties: StreamProperties) {
         s3
             .to(
                 "t2",
-                Produced.with(WindowedSerdes.TimeWindowedSerde<>, serdeAggregatedData)
+                Produced.with(WindowedSerdes.TimeWindowedSerde(serdeAggregatedKey), serdeAggregatedData)
             )
 
         return processor.build()
     }
 
+    // Fahrenheit -> Celsius
     private fun convertTemperature(event: SensorData): SensorData {
-
         val convertedValue: List<value_record> = event.getValue().map {
             if (it.getType() == "temperature" && it.getUnit() == "Fahrenheit") {
-
                 it.setValue(((it.getValue() - 32) / 1.8))
                 it.setUnit("Celsius")
             }
@@ -97,8 +98,8 @@ class StreamProcessor(properties: StreamProperties) {
         return event
     }
 
+    // One data point -> list of data points
     private fun splitDataPoints(event: SensorData): List<SensorDataPerValue> {
-
         return event.getValue().map {
             SensorDataPerValue(
                 event.getSensorId(),
@@ -110,11 +111,11 @@ class StreamProcessor(properties: StreamProperties) {
         }
     }
 
+    // Aggregation (sum & count)
     private fun aggregateEvents(
         value: SensorDataPerValue,
         aggregate: SensorDataPreAggregation
     ): SensorDataPreAggregation {
-
         return SensorDataPreAggregation(
             aggregate.getSum() + value.getValue(),
             aggregate.getCount() + 1,
@@ -123,10 +124,10 @@ class StreamProcessor(properties: StreamProperties) {
         )
     }
 
+    // Calculate average out of sum and count
     private fun calculateAverage(value: SensorDataPreAggregation): SensorDataAggregation {
-
         return SensorDataAggregation(
-            value.getSum() / value.getCount(),
+            ((value.getSum() / value.getCount()) * 10.0).roundToInt() / 10.0,
             value.getCount(),
             value.getUnit(),
             value.getTimestamp()
