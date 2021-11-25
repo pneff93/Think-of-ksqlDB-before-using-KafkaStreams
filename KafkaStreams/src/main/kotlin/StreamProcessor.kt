@@ -4,6 +4,7 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
+import org.apache.kafka.streams.StreamsConfig
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.*
 import org.apache.logging.log4j.kotlin.logger
@@ -40,45 +41,51 @@ class StreamProcessor(properties: StreamProperties) {
         serdeAggregatedKey = SpecificAvroSerde<SensorDataAggregationKey>()
         serdeAggregatedKey.configure(registryConfig, true) // true because it's a key
 
-        streams = KafkaStreams(createTopology(), properties.configureProperties())
+        streams = KafkaStreams(createTopology(), properties.configureProperties()
+            .apply { setProperty(StreamsConfig.WINDOWED_INNER_CLASS_SERDE, "$serdeAggregatedKey") })
         logger("Kafka Streams").info(createTopology().describe())
     }
 
     private fun createTopology(): Topology {
 
         val processor = StreamsBuilder()
+        val windowSizeInMillis = 10000L
 
-
-        val s1: KStream<String, SensorDataPerValue> = processor
+        // Consume
+        processor
             .stream(
                 "sensor-data-raw",
                 Consumed.with(Serdes.String(), serdeRawData)
             )
-            .mapValues { value -> convertTemperature(value) }   // Fahrenheit -> Celsius
-            .flatMapValues { value -> splitDataPoints(value) }  // One event per data point
 
+            // Transform
+            .mapValues { value -> convertTemperature(value) }                               // Fahrenheit -> Celsius
+            .flatMapValues { value -> splitDataPoints(value) }                              // One event per data point
 
-        val s2: KGroupedStream<SensorDataAggregationKey, SensorDataPerValue> = s1
+            // Group by new key
             .groupBy(
                 { _, value -> SensorDataAggregationKey(value.getSensorId(), value.getType()) },
                 Grouped.with(serdeAggregatedKey, serdeSingleData)
             )
 
-        val s3: KStream<Windowed<SensorDataAggregationKey>, SensorDataAggregation> = s2
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofSeconds(10)))
+            // Aggregate over hopping window
+            .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMillis(windowSizeInMillis)))
             .aggregate(
-                { SensorDataPreAggregation(0.0, 0, "", "") },   // dummy initializer
-                { _, value, aggregate -> aggregateEvents(value, aggregate) },
+                { SensorDataPreAggregation(0.0, 0, "", "") },      // dummy initializer
+                { _, value, aggregate -> aggregateEvents(value, aggregate) },               // calculate sum and count
                 Materialized.with(serdeAggregatedKey, serdePreAggregatedData)
             )
             .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
             .toStream()
-            .mapValues { value -> calculateAverage(value) }
+            .mapValues { value -> calculateAverage(value) }                                 // calculate average
 
-        s3
+            // Produce
             .to(
-                "t2",
-                Produced.with(WindowedSerdes.TimeWindowedSerde(serdeAggregatedKey), serdeAggregatedData)
+                "sensor-data-aggregation-streams",
+                Produced.with(
+                    WindowedSerdes.TimeWindowedSerde(serdeAggregatedKey, windowSizeInMillis),
+                    serdeAggregatedData
+                )
             )
 
         return processor.build()
