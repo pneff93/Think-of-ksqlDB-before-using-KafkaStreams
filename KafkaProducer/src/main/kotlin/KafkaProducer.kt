@@ -1,5 +1,5 @@
 import com.google.gson.Gson
-import com.kafkaSummitEurope.SensorData
+import com.kafkaStreamsExample.SensorData
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.logging.log4j.kotlin.logger

@@ -1,4 +1,4 @@
-import com.kafkaSummitEurope.SensorData
+import com.kafkaStreamsExample.SensorData
 import kotlinx.coroutines.runBlocking
 
 fun main() {
