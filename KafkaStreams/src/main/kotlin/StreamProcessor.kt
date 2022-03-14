@@ -1,4 +1,4 @@
-import com.kafkaSummitEurope.*
+import com.kafkaStreamsExample.*
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 import org.apache.kafka.common.serialization.Serdes

@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.kafkaSummitEurope;
+package com.kafkaStreamsExample;
 
 import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -2183272467101894360L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SensorDataPreAggregation\",\"namespace\":\"com.kafkaSummitEurope\",\"fields\":[{\"name\":\"sum\",\"type\":\"double\"},{\"name\":\"count\",\"type\":\"int\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+  private static final long serialVersionUID = -443765712240548118L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SensorDataPreAggregation\",\"namespace\":\"com.kafkaStreamsExample\",\"fields\":[{\"name\":\"sum\",\"type\":\"double\"},{\"name\":\"count\",\"type\":\"int\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -194,8 +194,8 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
    * Creates a new SensorDataPreAggregation RecordBuilder.
    * @return A new SensorDataPreAggregation RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataPreAggregation.Builder newBuilder() {
-    return new com.kafkaSummitEurope.SensorDataPreAggregation.Builder();
+  public static com.kafkaStreamsExample.SensorDataPreAggregation.Builder newBuilder() {
+    return new com.kafkaStreamsExample.SensorDataPreAggregation.Builder();
   }
 
   /**
@@ -203,11 +203,11 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
    * @param other The existing builder to copy.
    * @return A new SensorDataPreAggregation RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataPreAggregation.Builder newBuilder(com.kafkaSummitEurope.SensorDataPreAggregation.Builder other) {
+  public static com.kafkaStreamsExample.SensorDataPreAggregation.Builder newBuilder(com.kafkaStreamsExample.SensorDataPreAggregation.Builder other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.SensorDataPreAggregation.Builder();
+      return new com.kafkaStreamsExample.SensorDataPreAggregation.Builder();
     } else {
-      return new com.kafkaSummitEurope.SensorDataPreAggregation.Builder(other);
+      return new com.kafkaStreamsExample.SensorDataPreAggregation.Builder(other);
     }
   }
 
@@ -216,11 +216,11 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
    * @param other The existing instance to copy.
    * @return A new SensorDataPreAggregation RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataPreAggregation.Builder newBuilder(com.kafkaSummitEurope.SensorDataPreAggregation other) {
+  public static com.kafkaStreamsExample.SensorDataPreAggregation.Builder newBuilder(com.kafkaStreamsExample.SensorDataPreAggregation other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.SensorDataPreAggregation.Builder();
+      return new com.kafkaStreamsExample.SensorDataPreAggregation.Builder();
     } else {
-      return new com.kafkaSummitEurope.SensorDataPreAggregation.Builder(other);
+      return new com.kafkaStreamsExample.SensorDataPreAggregation.Builder(other);
     }
   }
 
@@ -245,7 +245,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.kafkaSummitEurope.SensorDataPreAggregation.Builder other) {
+    private Builder(com.kafkaStreamsExample.SensorDataPreAggregation.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.sum)) {
         this.sum = data().deepCopy(fields()[0].schema(), other.sum);
@@ -269,7 +269,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
      * Creates a Builder by copying an existing SensorDataPreAggregation instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.kafkaSummitEurope.SensorDataPreAggregation other) {
+    private Builder(com.kafkaStreamsExample.SensorDataPreAggregation other) {
       super(SCHEMA$);
       if (isValidValue(fields()[0], other.sum)) {
         this.sum = data().deepCopy(fields()[0].schema(), other.sum);
@@ -303,7 +303,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
       * @param value The value of 'sum'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPreAggregation.Builder setSum(double value) {
+    public com.kafkaStreamsExample.SensorDataPreAggregation.Builder setSum(double value) {
       validate(fields()[0], value);
       this.sum = value;
       fieldSetFlags()[0] = true;
@@ -323,7 +323,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
       * Clears the value of the 'sum' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPreAggregation.Builder clearSum() {
+    public com.kafkaStreamsExample.SensorDataPreAggregation.Builder clearSum() {
       fieldSetFlags()[0] = false;
       return this;
     }
@@ -342,7 +342,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
       * @param value The value of 'count'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPreAggregation.Builder setCount(int value) {
+    public com.kafkaStreamsExample.SensorDataPreAggregation.Builder setCount(int value) {
       validate(fields()[1], value);
       this.count = value;
       fieldSetFlags()[1] = true;
@@ -362,7 +362,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
       * Clears the value of the 'count' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPreAggregation.Builder clearCount() {
+    public com.kafkaStreamsExample.SensorDataPreAggregation.Builder clearCount() {
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -381,7 +381,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
       * @param value The value of 'unit'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPreAggregation.Builder setUnit(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorDataPreAggregation.Builder setUnit(java.lang.String value) {
       validate(fields()[2], value);
       this.unit = value;
       fieldSetFlags()[2] = true;
@@ -401,7 +401,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
       * Clears the value of the 'unit' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPreAggregation.Builder clearUnit() {
+    public com.kafkaStreamsExample.SensorDataPreAggregation.Builder clearUnit() {
       unit = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -421,7 +421,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPreAggregation.Builder setTimestamp(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorDataPreAggregation.Builder setTimestamp(java.lang.String value) {
       validate(fields()[3], value);
       this.timestamp = value;
       fieldSetFlags()[3] = true;
@@ -441,7 +441,7 @@ public class SensorDataPreAggregation extends org.apache.avro.specific.SpecificR
       * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPreAggregation.Builder clearTimestamp() {
+    public com.kafkaStreamsExample.SensorDataPreAggregation.Builder clearTimestamp() {
       timestamp = null;
       fieldSetFlags()[3] = false;
       return this;

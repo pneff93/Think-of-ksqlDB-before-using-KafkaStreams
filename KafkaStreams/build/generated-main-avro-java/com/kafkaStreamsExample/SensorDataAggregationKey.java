@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.kafkaSummitEurope;
+package com.kafkaStreamsExample;
 
 import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2688695052773800487L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SensorDataAggregationKey\",\"namespace\":\"com.kafkaSummitEurope\",\"fields\":[{\"name\":\"sensorId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+  private static final long serialVersionUID = -4362782915997400339L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SensorDataAggregationKey\",\"namespace\":\"com.kafkaStreamsExample\",\"fields\":[{\"name\":\"sensorId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -150,8 +150,8 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
    * Creates a new SensorDataAggregationKey RecordBuilder.
    * @return A new SensorDataAggregationKey RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataAggregationKey.Builder newBuilder() {
-    return new com.kafkaSummitEurope.SensorDataAggregationKey.Builder();
+  public static com.kafkaStreamsExample.SensorDataAggregationKey.Builder newBuilder() {
+    return new com.kafkaStreamsExample.SensorDataAggregationKey.Builder();
   }
 
   /**
@@ -159,11 +159,11 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
    * @param other The existing builder to copy.
    * @return A new SensorDataAggregationKey RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataAggregationKey.Builder newBuilder(com.kafkaSummitEurope.SensorDataAggregationKey.Builder other) {
+  public static com.kafkaStreamsExample.SensorDataAggregationKey.Builder newBuilder(com.kafkaStreamsExample.SensorDataAggregationKey.Builder other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.SensorDataAggregationKey.Builder();
+      return new com.kafkaStreamsExample.SensorDataAggregationKey.Builder();
     } else {
-      return new com.kafkaSummitEurope.SensorDataAggregationKey.Builder(other);
+      return new com.kafkaStreamsExample.SensorDataAggregationKey.Builder(other);
     }
   }
 
@@ -172,11 +172,11 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
    * @param other The existing instance to copy.
    * @return A new SensorDataAggregationKey RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataAggregationKey.Builder newBuilder(com.kafkaSummitEurope.SensorDataAggregationKey other) {
+  public static com.kafkaStreamsExample.SensorDataAggregationKey.Builder newBuilder(com.kafkaStreamsExample.SensorDataAggregationKey other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.SensorDataAggregationKey.Builder();
+      return new com.kafkaStreamsExample.SensorDataAggregationKey.Builder();
     } else {
-      return new com.kafkaSummitEurope.SensorDataAggregationKey.Builder(other);
+      return new com.kafkaStreamsExample.SensorDataAggregationKey.Builder(other);
     }
   }
 
@@ -199,7 +199,7 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.kafkaSummitEurope.SensorDataAggregationKey.Builder other) {
+    private Builder(com.kafkaStreamsExample.SensorDataAggregationKey.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.sensorId)) {
         this.sensorId = data().deepCopy(fields()[0].schema(), other.sensorId);
@@ -215,7 +215,7 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
      * Creates a Builder by copying an existing SensorDataAggregationKey instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.kafkaSummitEurope.SensorDataAggregationKey other) {
+    private Builder(com.kafkaStreamsExample.SensorDataAggregationKey other) {
       super(SCHEMA$);
       if (isValidValue(fields()[0], other.sensorId)) {
         this.sensorId = data().deepCopy(fields()[0].schema(), other.sensorId);
@@ -241,7 +241,7 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
       * @param value The value of 'sensorId'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataAggregationKey.Builder setSensorId(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorDataAggregationKey.Builder setSensorId(java.lang.String value) {
       validate(fields()[0], value);
       this.sensorId = value;
       fieldSetFlags()[0] = true;
@@ -261,7 +261,7 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
       * Clears the value of the 'sensorId' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataAggregationKey.Builder clearSensorId() {
+    public com.kafkaStreamsExample.SensorDataAggregationKey.Builder clearSensorId() {
       sensorId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -281,7 +281,7 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
       * @param value The value of 'type'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataAggregationKey.Builder setType(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorDataAggregationKey.Builder setType(java.lang.String value) {
       validate(fields()[1], value);
       this.type = value;
       fieldSetFlags()[1] = true;
@@ -301,7 +301,7 @@ public class SensorDataAggregationKey extends org.apache.avro.specific.SpecificR
       * Clears the value of the 'type' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataAggregationKey.Builder clearType() {
+    public com.kafkaStreamsExample.SensorDataAggregationKey.Builder clearType() {
       type = null;
       fieldSetFlags()[1] = false;
       return this;

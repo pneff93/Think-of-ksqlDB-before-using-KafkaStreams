@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.kafkaSummitEurope;
+package com.kafkaStreamsExample;
 
 import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class SensorData extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -422179615262756649L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SensorData\",\"namespace\":\"com.kafkaSummitEurope\",\"fields\":[{\"name\":\"sensorId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"value_record\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":\"double\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}},{\"name\":\"timestamp\",\"type\":[{\"type\":\"string\",\"avro.java.string\":\"String\"},\"null\"]}]}");
+  private static final long serialVersionUID = 8878959344799173211L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SensorData\",\"namespace\":\"com.kafkaStreamsExample\",\"fields\":[{\"name\":\"sensorId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"value_record\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":\"double\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}}},{\"name\":\"timestamp\",\"type\":[{\"type\":\"string\",\"avro.java.string\":\"String\"},\"null\"]}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,7 +72,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
   }
 
   @Deprecated public java.lang.String sensorId;
-  @Deprecated public java.util.List<com.kafkaSummitEurope.value_record> value;
+  @Deprecated public java.util.List<com.kafkaStreamsExample.value_record> value;
   @Deprecated public java.lang.String timestamp;
 
   /**
@@ -88,7 +88,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
    * @param value The new value for value
    * @param timestamp The new value for timestamp
    */
-  public SensorData(java.lang.String sensorId, java.util.List<com.kafkaSummitEurope.value_record> value, java.lang.String timestamp) {
+  public SensorData(java.lang.String sensorId, java.util.List<com.kafkaStreamsExample.value_record> value, java.lang.String timestamp) {
     this.sensorId = sensorId;
     this.value = value;
     this.timestamp = timestamp;
@@ -111,7 +111,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: sensorId = value$ != null ? value$.toString() : null; break;
-    case 1: value = (java.util.List<com.kafkaSummitEurope.value_record>)value$; break;
+    case 1: value = (java.util.List<com.kafkaStreamsExample.value_record>)value$; break;
     case 2: timestamp = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
@@ -138,7 +138,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
    * Gets the value of the 'value' field.
    * @return The value of the 'value' field.
    */
-  public java.util.List<com.kafkaSummitEurope.value_record> getValue() {
+  public java.util.List<com.kafkaStreamsExample.value_record> getValue() {
     return value;
   }
 
@@ -147,7 +147,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
    * Sets the value of the 'value' field.
    * @param value the value to set.
    */
-  public void setValue(java.util.List<com.kafkaSummitEurope.value_record> value) {
+  public void setValue(java.util.List<com.kafkaStreamsExample.value_record> value) {
     this.value = value;
   }
 
@@ -172,8 +172,8 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
    * Creates a new SensorData RecordBuilder.
    * @return A new SensorData RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorData.Builder newBuilder() {
-    return new com.kafkaSummitEurope.SensorData.Builder();
+  public static com.kafkaStreamsExample.SensorData.Builder newBuilder() {
+    return new com.kafkaStreamsExample.SensorData.Builder();
   }
 
   /**
@@ -181,11 +181,11 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
    * @param other The existing builder to copy.
    * @return A new SensorData RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorData.Builder newBuilder(com.kafkaSummitEurope.SensorData.Builder other) {
+  public static com.kafkaStreamsExample.SensorData.Builder newBuilder(com.kafkaStreamsExample.SensorData.Builder other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.SensorData.Builder();
+      return new com.kafkaStreamsExample.SensorData.Builder();
     } else {
-      return new com.kafkaSummitEurope.SensorData.Builder(other);
+      return new com.kafkaStreamsExample.SensorData.Builder(other);
     }
   }
 
@@ -194,11 +194,11 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
    * @param other The existing instance to copy.
    * @return A new SensorData RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorData.Builder newBuilder(com.kafkaSummitEurope.SensorData other) {
+  public static com.kafkaStreamsExample.SensorData.Builder newBuilder(com.kafkaStreamsExample.SensorData other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.SensorData.Builder();
+      return new com.kafkaStreamsExample.SensorData.Builder();
     } else {
-      return new com.kafkaSummitEurope.SensorData.Builder(other);
+      return new com.kafkaStreamsExample.SensorData.Builder(other);
     }
   }
 
@@ -210,7 +210,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
     implements org.apache.avro.data.RecordBuilder<SensorData> {
 
     private java.lang.String sensorId;
-    private java.util.List<com.kafkaSummitEurope.value_record> value;
+    private java.util.List<com.kafkaStreamsExample.value_record> value;
     private java.lang.String timestamp;
 
     /** Creates a new Builder */
@@ -222,7 +222,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.kafkaSummitEurope.SensorData.Builder other) {
+    private Builder(com.kafkaStreamsExample.SensorData.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.sensorId)) {
         this.sensorId = data().deepCopy(fields()[0].schema(), other.sensorId);
@@ -242,7 +242,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
      * Creates a Builder by copying an existing SensorData instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.kafkaSummitEurope.SensorData other) {
+    private Builder(com.kafkaStreamsExample.SensorData other) {
       super(SCHEMA$);
       if (isValidValue(fields()[0], other.sensorId)) {
         this.sensorId = data().deepCopy(fields()[0].schema(), other.sensorId);
@@ -272,7 +272,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       * @param value The value of 'sensorId'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorData.Builder setSensorId(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorData.Builder setSensorId(java.lang.String value) {
       validate(fields()[0], value);
       this.sensorId = value;
       fieldSetFlags()[0] = true;
@@ -292,7 +292,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       * Clears the value of the 'sensorId' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorData.Builder clearSensorId() {
+    public com.kafkaStreamsExample.SensorData.Builder clearSensorId() {
       sensorId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -302,7 +302,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       * Gets the value of the 'value' field.
       * @return The value.
       */
-    public java.util.List<com.kafkaSummitEurope.value_record> getValue() {
+    public java.util.List<com.kafkaStreamsExample.value_record> getValue() {
       return value;
     }
 
@@ -312,7 +312,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       * @param value The value of 'value'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorData.Builder setValue(java.util.List<com.kafkaSummitEurope.value_record> value) {
+    public com.kafkaStreamsExample.SensorData.Builder setValue(java.util.List<com.kafkaStreamsExample.value_record> value) {
       validate(fields()[1], value);
       this.value = value;
       fieldSetFlags()[1] = true;
@@ -332,7 +332,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       * Clears the value of the 'value' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorData.Builder clearValue() {
+    public com.kafkaStreamsExample.SensorData.Builder clearValue() {
       value = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -352,7 +352,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorData.Builder setTimestamp(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorData.Builder setTimestamp(java.lang.String value) {
       validate(fields()[2], value);
       this.timestamp = value;
       fieldSetFlags()[2] = true;
@@ -372,7 +372,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorData.Builder clearTimestamp() {
+    public com.kafkaStreamsExample.SensorData.Builder clearTimestamp() {
       timestamp = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -384,7 +384,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       try {
         SensorData record = new SensorData();
         record.sensorId = fieldSetFlags()[0] ? this.sensorId : (java.lang.String) defaultValue(fields()[0]);
-        record.value = fieldSetFlags()[1] ? this.value : (java.util.List<com.kafkaSummitEurope.value_record>) defaultValue(fields()[1]);
+        record.value = fieldSetFlags()[1] ? this.value : (java.util.List<com.kafkaStreamsExample.value_record>) defaultValue(fields()[1]);
         record.timestamp = fieldSetFlags()[2] ? this.timestamp : (java.lang.String) defaultValue(fields()[2]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
@@ -424,7 +424,7 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
     out.writeArrayStart();
     out.setItemCount(size0);
     long actualSize0 = 0;
-    for (com.kafkaSummitEurope.value_record e0: this.value) {
+    for (com.kafkaStreamsExample.value_record e0: this.value) {
       actualSize0++;
       out.startItem();
       e0.customEncode(out);
@@ -451,17 +451,17 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
       this.sensorId = in.readString();
 
       long size0 = in.readArrayStart();
-      java.util.List<com.kafkaSummitEurope.value_record> a0 = this.value;
+      java.util.List<com.kafkaStreamsExample.value_record> a0 = this.value;
       if (a0 == null) {
-        a0 = new SpecificData.Array<com.kafkaSummitEurope.value_record>((int)size0, SCHEMA$.getField("value").schema());
+        a0 = new SpecificData.Array<com.kafkaStreamsExample.value_record>((int)size0, SCHEMA$.getField("value").schema());
         this.value = a0;
       } else a0.clear();
-      SpecificData.Array<com.kafkaSummitEurope.value_record> ga0 = (a0 instanceof SpecificData.Array ? (SpecificData.Array<com.kafkaSummitEurope.value_record>)a0 : null);
+      SpecificData.Array<com.kafkaStreamsExample.value_record> ga0 = (a0 instanceof SpecificData.Array ? (SpecificData.Array<com.kafkaStreamsExample.value_record>)a0 : null);
       for ( ; 0 < size0; size0 = in.arrayNext()) {
         for ( ; size0 != 0; size0--) {
-          com.kafkaSummitEurope.value_record e0 = (ga0 != null ? ga0.peek() : null);
+          com.kafkaStreamsExample.value_record e0 = (ga0 != null ? ga0.peek() : null);
           if (e0 == null) {
-            e0 = new com.kafkaSummitEurope.value_record();
+            e0 = new com.kafkaStreamsExample.value_record();
           }
           e0.customDecode(in);
           a0.add(e0);
@@ -484,17 +484,17 @@ public class SensorData extends org.apache.avro.specific.SpecificRecordBase impl
 
         case 1:
           long size0 = in.readArrayStart();
-          java.util.List<com.kafkaSummitEurope.value_record> a0 = this.value;
+          java.util.List<com.kafkaStreamsExample.value_record> a0 = this.value;
           if (a0 == null) {
-            a0 = new SpecificData.Array<com.kafkaSummitEurope.value_record>((int)size0, SCHEMA$.getField("value").schema());
+            a0 = new SpecificData.Array<com.kafkaStreamsExample.value_record>((int)size0, SCHEMA$.getField("value").schema());
             this.value = a0;
           } else a0.clear();
-          SpecificData.Array<com.kafkaSummitEurope.value_record> ga0 = (a0 instanceof SpecificData.Array ? (SpecificData.Array<com.kafkaSummitEurope.value_record>)a0 : null);
+          SpecificData.Array<com.kafkaStreamsExample.value_record> ga0 = (a0 instanceof SpecificData.Array ? (SpecificData.Array<com.kafkaStreamsExample.value_record>)a0 : null);
           for ( ; 0 < size0; size0 = in.arrayNext()) {
             for ( ; size0 != 0; size0--) {
-              com.kafkaSummitEurope.value_record e0 = (ga0 != null ? ga0.peek() : null);
+              com.kafkaStreamsExample.value_record e0 = (ga0 != null ? ga0.peek() : null);
               if (e0 == null) {
-                e0 = new com.kafkaSummitEurope.value_record();
+                e0 = new com.kafkaStreamsExample.value_record();
               }
               e0.customDecode(in);
               a0.add(e0);

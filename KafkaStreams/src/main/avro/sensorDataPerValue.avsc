@@ -1,7 +1,7 @@
 {
   "name": "SensorDataPerValue",
   "type": "record",
-  "namespace": "com.kafkaSummitEurope",
+  "namespace": "com.kafkaStreamsExample",
   "fields": [
     {
       "name": "sensorId",

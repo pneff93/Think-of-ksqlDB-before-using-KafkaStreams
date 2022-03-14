@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.kafkaSummitEurope;
+package com.kafkaStreamsExample;
 
 import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2870747070120227186L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SensorDataPerValue\",\"namespace\":\"com.kafkaSummitEurope\",\"fields\":[{\"name\":\"sensorId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":\"double\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+  private static final long serialVersionUID = 909647973227219287L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"SensorDataPerValue\",\"namespace\":\"com.kafkaStreamsExample\",\"fields\":[{\"name\":\"sensorId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":\"double\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"timestamp\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -216,8 +216,8 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
    * Creates a new SensorDataPerValue RecordBuilder.
    * @return A new SensorDataPerValue RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataPerValue.Builder newBuilder() {
-    return new com.kafkaSummitEurope.SensorDataPerValue.Builder();
+  public static com.kafkaStreamsExample.SensorDataPerValue.Builder newBuilder() {
+    return new com.kafkaStreamsExample.SensorDataPerValue.Builder();
   }
 
   /**
@@ -225,11 +225,11 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
    * @param other The existing builder to copy.
    * @return A new SensorDataPerValue RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataPerValue.Builder newBuilder(com.kafkaSummitEurope.SensorDataPerValue.Builder other) {
+  public static com.kafkaStreamsExample.SensorDataPerValue.Builder newBuilder(com.kafkaStreamsExample.SensorDataPerValue.Builder other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.SensorDataPerValue.Builder();
+      return new com.kafkaStreamsExample.SensorDataPerValue.Builder();
     } else {
-      return new com.kafkaSummitEurope.SensorDataPerValue.Builder(other);
+      return new com.kafkaStreamsExample.SensorDataPerValue.Builder(other);
     }
   }
 
@@ -238,11 +238,11 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
    * @param other The existing instance to copy.
    * @return A new SensorDataPerValue RecordBuilder
    */
-  public static com.kafkaSummitEurope.SensorDataPerValue.Builder newBuilder(com.kafkaSummitEurope.SensorDataPerValue other) {
+  public static com.kafkaStreamsExample.SensorDataPerValue.Builder newBuilder(com.kafkaStreamsExample.SensorDataPerValue other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.SensorDataPerValue.Builder();
+      return new com.kafkaStreamsExample.SensorDataPerValue.Builder();
     } else {
-      return new com.kafkaSummitEurope.SensorDataPerValue.Builder(other);
+      return new com.kafkaStreamsExample.SensorDataPerValue.Builder(other);
     }
   }
 
@@ -268,7 +268,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.kafkaSummitEurope.SensorDataPerValue.Builder other) {
+    private Builder(com.kafkaStreamsExample.SensorDataPerValue.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.sensorId)) {
         this.sensorId = data().deepCopy(fields()[0].schema(), other.sensorId);
@@ -296,7 +296,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
      * Creates a Builder by copying an existing SensorDataPerValue instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.kafkaSummitEurope.SensorDataPerValue other) {
+    private Builder(com.kafkaStreamsExample.SensorDataPerValue other) {
       super(SCHEMA$);
       if (isValidValue(fields()[0], other.sensorId)) {
         this.sensorId = data().deepCopy(fields()[0].schema(), other.sensorId);
@@ -334,7 +334,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'sensorId'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder setSensorId(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder setSensorId(java.lang.String value) {
       validate(fields()[0], value);
       this.sensorId = value;
       fieldSetFlags()[0] = true;
@@ -354,7 +354,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'sensorId' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder clearSensorId() {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder clearSensorId() {
       sensorId = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -374,7 +374,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'type'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder setType(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder setType(java.lang.String value) {
       validate(fields()[1], value);
       this.type = value;
       fieldSetFlags()[1] = true;
@@ -394,7 +394,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'type' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder clearType() {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder clearType() {
       type = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -414,7 +414,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'value'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder setValue(double value) {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder setValue(double value) {
       validate(fields()[2], value);
       this.value = value;
       fieldSetFlags()[2] = true;
@@ -434,7 +434,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'value' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder clearValue() {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder clearValue() {
       fieldSetFlags()[2] = false;
       return this;
     }
@@ -453,7 +453,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'unit'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder setUnit(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder setUnit(java.lang.String value) {
       validate(fields()[3], value);
       this.unit = value;
       fieldSetFlags()[3] = true;
@@ -473,7 +473,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'unit' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder clearUnit() {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder clearUnit() {
       unit = null;
       fieldSetFlags()[3] = false;
       return this;
@@ -493,7 +493,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder setTimestamp(java.lang.String value) {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder setTimestamp(java.lang.String value) {
       validate(fields()[4], value);
       this.timestamp = value;
       fieldSetFlags()[4] = true;
@@ -513,7 +513,7 @@ public class SensorDataPerValue extends org.apache.avro.specific.SpecificRecordB
       * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.SensorDataPerValue.Builder clearTimestamp() {
+    public com.kafkaStreamsExample.SensorDataPerValue.Builder clearTimestamp() {
       timestamp = null;
       fieldSetFlags()[4] = false;
       return this;

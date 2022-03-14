@@ -1,7 +1,7 @@
 {
   "name": "SensorDataPreAggregation",
   "type": "record",
-  "namespace": "com.kafkaSummitEurope",
+  "namespace": "com.kafkaStreamsExample",
   "fields": [
     {
       "name": "sum",

@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.kafkaSummitEurope;
+package com.kafkaStreamsExample;
 
 import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class value_record extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -7971065887537999890L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"value_record\",\"namespace\":\"com.kafkaSummitEurope\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":\"double\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+  private static final long serialVersionUID = 787550718342190572L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"value_record\",\"namespace\":\"com.kafkaStreamsExample\",\"fields\":[{\"name\":\"type\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"value\",\"type\":\"double\"},{\"name\":\"unit\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -172,8 +172,8 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
    * Creates a new value_record RecordBuilder.
    * @return A new value_record RecordBuilder
    */
-  public static com.kafkaSummitEurope.value_record.Builder newBuilder() {
-    return new com.kafkaSummitEurope.value_record.Builder();
+  public static com.kafkaStreamsExample.value_record.Builder newBuilder() {
+    return new com.kafkaStreamsExample.value_record.Builder();
   }
 
   /**
@@ -181,11 +181,11 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
    * @param other The existing builder to copy.
    * @return A new value_record RecordBuilder
    */
-  public static com.kafkaSummitEurope.value_record.Builder newBuilder(com.kafkaSummitEurope.value_record.Builder other) {
+  public static com.kafkaStreamsExample.value_record.Builder newBuilder(com.kafkaStreamsExample.value_record.Builder other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.value_record.Builder();
+      return new com.kafkaStreamsExample.value_record.Builder();
     } else {
-      return new com.kafkaSummitEurope.value_record.Builder(other);
+      return new com.kafkaStreamsExample.value_record.Builder(other);
     }
   }
 
@@ -194,11 +194,11 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
    * @param other The existing instance to copy.
    * @return A new value_record RecordBuilder
    */
-  public static com.kafkaSummitEurope.value_record.Builder newBuilder(com.kafkaSummitEurope.value_record other) {
+  public static com.kafkaStreamsExample.value_record.Builder newBuilder(com.kafkaStreamsExample.value_record other) {
     if (other == null) {
-      return new com.kafkaSummitEurope.value_record.Builder();
+      return new com.kafkaStreamsExample.value_record.Builder();
     } else {
-      return new com.kafkaSummitEurope.value_record.Builder(other);
+      return new com.kafkaStreamsExample.value_record.Builder(other);
     }
   }
 
@@ -222,7 +222,7 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.kafkaSummitEurope.value_record.Builder other) {
+    private Builder(com.kafkaStreamsExample.value_record.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.type)) {
         this.type = data().deepCopy(fields()[0].schema(), other.type);
@@ -242,7 +242,7 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
      * Creates a Builder by copying an existing value_record instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.kafkaSummitEurope.value_record other) {
+    private Builder(com.kafkaStreamsExample.value_record other) {
       super(SCHEMA$);
       if (isValidValue(fields()[0], other.type)) {
         this.type = data().deepCopy(fields()[0].schema(), other.type);
@@ -272,7 +272,7 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'type'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.value_record.Builder setType(java.lang.String value) {
+    public com.kafkaStreamsExample.value_record.Builder setType(java.lang.String value) {
       validate(fields()[0], value);
       this.type = value;
       fieldSetFlags()[0] = true;
@@ -292,7 +292,7 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'type' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.value_record.Builder clearType() {
+    public com.kafkaStreamsExample.value_record.Builder clearType() {
       type = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -312,7 +312,7 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'value'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.value_record.Builder setValue(double value) {
+    public com.kafkaStreamsExample.value_record.Builder setValue(double value) {
       validate(fields()[1], value);
       this.value = value;
       fieldSetFlags()[1] = true;
@@ -332,7 +332,7 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'value' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.value_record.Builder clearValue() {
+    public com.kafkaStreamsExample.value_record.Builder clearValue() {
       fieldSetFlags()[1] = false;
       return this;
     }
@@ -351,7 +351,7 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'unit'.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.value_record.Builder setUnit(java.lang.String value) {
+    public com.kafkaStreamsExample.value_record.Builder setUnit(java.lang.String value) {
       validate(fields()[2], value);
       this.unit = value;
       fieldSetFlags()[2] = true;
@@ -371,7 +371,7 @@ public class value_record extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'unit' field.
       * @return This builder.
       */
-    public com.kafkaSummitEurope.value_record.Builder clearUnit() {
+    public com.kafkaStreamsExample.value_record.Builder clearUnit() {
       unit = null;
       fieldSetFlags()[2] = false;
       return this;
