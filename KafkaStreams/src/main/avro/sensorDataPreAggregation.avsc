@@ -1,0 +1,23 @@
+{
+  "name": "SensorDataPreAggregation",
+  "type": "record",
+  "namespace": "com.kafkaStreamsExample",
+  "fields": [
+    {
+      "name": "sum",
+      "type": "double"
+    },
+    {
+      "name": "count",
+      "type": "int"
+    },
+    {
+      "name": "unit",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    }
+  ]
+}

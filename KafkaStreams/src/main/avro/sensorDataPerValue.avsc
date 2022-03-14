@@ -1,0 +1,27 @@
+{
+  "name": "SensorDataPerValue",
+  "type": "record",
+  "namespace": "com.kafkaStreamsExample",
+  "fields": [
+    {
+      "name": "sensorId",
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": "double"
+    },
+    {
+      "name": "unit",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    }
+  ]
+}

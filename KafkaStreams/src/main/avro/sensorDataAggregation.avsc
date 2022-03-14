@@ -1,0 +1,23 @@
+{
+  "name": "SensorDataAggregation",
+  "type": "record",
+  "namespace": "com.kafkaStreamsExample",
+  "fields": [
+    {
+      "name": "valueAvg",
+      "type": "double"
+    },
+    {
+      "name": "count",
+      "type": "int"
+    },
+    {
+      "name": "unit",
+      "type": "string"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    }
+  ]
+}

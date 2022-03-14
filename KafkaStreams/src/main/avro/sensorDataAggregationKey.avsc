@@ -1,0 +1,15 @@
+{
+  "name": "SensorDataAggregationKey",
+  "type": "record",
+  "namespace": "com.kafkaStreamsExample",
+  "fields": [
+    {
+      "name": "sensorId",
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "type": "string"
+    }
+  ]
+}

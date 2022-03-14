@@ -1,0 +1,42 @@
+{
+  "name": "SensorData",
+  "type": "record",
+  "namespace": "com.kafkaStreamsExample",
+  "fields": [
+    {
+      "name": "sensorId",
+      "type": "string"
+    },
+    {
+      "name": "value",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "value_record",
+          "type": "record",
+          "fields": [
+            {
+              "name": "type",
+              "type": "string"
+            },
+            {
+              "name": "value",
+              "type": "float"
+            },
+            {
+              "name": "unit",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "timestamp",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  ]
+}
