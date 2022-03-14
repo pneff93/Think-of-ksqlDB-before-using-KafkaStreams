@@ -5,7 +5,7 @@ CREATE STREAM SENSOR_DATA_RAW(
 ) WITH (
     KAFKA_TOPIC = 'sensor-data-raw',
     VALUE_FORMAT = 'AVRO',
-    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorData'
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaStreamsExample.SensorData'
 );
 
 
@@ -14,7 +14,7 @@ CREATE STREAM SENSOR_DATA_TRANSFORMED
 WITH (
     KAFKA_TOPIC = 'sensor-data-transformed',
     VALUE_FORMAT = 'AVRO',
-    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorData'
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaStreamsExample.SensorData'
 ) AS SELECT
     "sensorId",
     TRANSFORM("value", (value) =>
@@ -40,7 +40,7 @@ CREATE STREAM SENSOR_DATA_PER_VALUE
 WITH (
     KAFKA_TOPIC = 'sensor-data-per-value',
     VALUE_FORMAT = 'AVRO',
-    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorDataPerValue'
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaStreamsExample.SensorDataPerValue'
 ) AS SELECT
     "sensorId",
     EXPLODE("value")->"type" AS "type",
@@ -58,7 +58,7 @@ WITH (
     KAFKA_TOPIC = 'sensor-data-aggregation-ksql',
     KEY_FORMAT = 'AVRO',
     VALUE_FORMAT = 'AVRO',
-    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaSummitEurope.SensorDataAggregation'
+    VALUE_AVRO_SCHEMA_FULL_NAME = 'com.kafkaStreamsExample.SensorDataAggregation'
 ) AS SELECT
     "sensorId",
     "type",
