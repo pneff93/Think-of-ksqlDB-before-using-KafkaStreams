@@ -88,8 +88,8 @@ services:
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
 
-  kafkaProducerSummit22:
-    image: kafkaproducersummit22:0.1.0
+  kafkaProducerMeetup22:
+    image: kafkaproducermeetup22:0.1.0
     build: ./KafkaProducer
     container_name: kafka-producer
     depends_on:
