@@ -41,8 +41,7 @@ class StreamProcessor(properties: StreamProperties) {
         serdeAggregatedKey = SpecificAvroSerde<SensorDataAggregationKey>()
         serdeAggregatedKey.configure(registryConfig, true) // true because it's a key
 
-        streams = KafkaStreams(createTopology(), properties.configureProperties()
-            .apply { setProperty(StreamsConfig.WINDOWED_INNER_CLASS_SERDE, "$serdeAggregatedKey") })
+        streams = KafkaStreams(createTopology(), properties.configureProperties())
         logger("Kafka Streams").info(createTopology().describe())
     }
 
@@ -83,8 +82,8 @@ class StreamProcessor(properties: StreamProperties) {
             .to(
                 "sensor-data-aggregation-streams",
                 Produced.with(
-                    WindowedSerdes.TimeWindowedSerde(serdeAggregatedKey, windowSizeInMillis),
-                    serdeAggregatedData
+                    WindowedSerdes.TimeWindowedSerde(serdeAggregatedKey, windowSizeInMillis),   // key serde
+                    serdeAggregatedData                                                         // value serde
                 )
             )
 
