@@ -19,7 +19,7 @@ services:
       - zookeeper
     ports:
       - 9092:9092
-      - 9101:9101
+      - 9991:9991
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -33,6 +33,7 @@ services:
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      KAFKA_JMX_PORT: 9991
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.0
@@ -55,12 +56,20 @@ services:
       - broker
     ports:
       - 8088:8088
+      - 1099:1099
     environment:
       KSQL_CONFIG_DIR: "/etc/ksql"
       KSQL_BOOTSTRAP_SERVERS: broker:29092
       KSQL_HOST_NAME: ksqldb-server
       KSQL_LISTENERS: "http://0.0.0.0:8088"
       KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      KSQL_JMX_OPTS: >
+        -Djava.rmi.server.hostname=localhost
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.port=1099
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.rmi.port=1099
 
   ksqldb-cli:
     image: confluentinc/cp-ksqldb-cli:7.0.0
@@ -79,7 +88,7 @@ services:
       - schema-registry
       - ksqldb-server
     ports:
-      - "9021:9021"
+      - 9021:9021
     environment:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
       CONTROL_CENTER_KSQL_KSQLDB1_URL: "http://ksqldb-server:8088"
@@ -98,3 +107,25 @@ services:
     depends_on:
       - broker
       - schema-registry
+
+  prometheus:
+    image: prom/prometheus:main
+    hostname: prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./Metrics/prometheus:/etc/prometheus
+
+  jmx-exporter:
+    image: sscaling/jmx-prometheus-exporter:0.12.0
+    container_name: jmx-exporter
+    hostname: jmx-exporter
+    ports:
+      - 5556:5556
+    depends_on:
+      - broker
+    environment:
+      CONFIG_YML: "/etc/jmx_exporter/config.yml"
+    volumes:
+      - ./Metrics/jmx-exporter/jmx-exporter.yml:/etc/jmx_exporter/config.yml
