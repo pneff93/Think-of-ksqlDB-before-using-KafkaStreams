@@ -4,7 +4,6 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 import org.apache.kafka.common.serialization.Serdes
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
-import org.apache.kafka.streams.StreamsConfig
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.*
 import org.apache.logging.log4j.kotlin.logger
@@ -64,15 +63,15 @@ class StreamProcessor(properties: StreamProperties) {
             // Group by new key
             .groupBy(
                 { _, value -> SensorDataAggregationKey(value.getSensorId(), value.getType()) },
-                Grouped.with(serdeAggregatedKey, serdeSingleData)
+                Grouped.with(serdeAggregatedKey, serdeSingleData)                           // -> repartition topic
             )
 
             // Aggregate over hopping window
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMillis(windowSizeInMillis)))
             .aggregate(
                 { SensorDataPreAggregation(0.0, 0, "", "") },      // dummy initializer
-                { _, value, aggregate -> aggregateEvents(value, aggregate) },               // calculate sum and count
-                Materialized.with(serdeAggregatedKey, serdePreAggregatedData)
+                { _, value, aggregate -> aggregateEvents(value, aggregate) },                // calculate sum and count
+                Materialized.with(serdeAggregatedKey, serdePreAggregatedData)                // -> changelog topic
             )
             .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
             .toStream()
