@@ -14,10 +14,10 @@ class StreamProcessor(properties: StreamProperties) {
 
     val streams: KafkaStreams
     private val serdeRawData: SpecificAvroSerde<SensorData>
-    private val serdeSingleData: SpecificAvroSerde<SensorDataPerValue>
-    private val serdePreAggregatedData: SpecificAvroSerde<SensorDataPreAggregation>
-    private val serdeAggregatedData: SpecificAvroSerde<SensorDataAggregation>
-    private val serdeAggregatedKey: SpecificAvroSerde<SensorDataAggregationKey>
+//    private val serdeSingleData: SpecificAvroSerde<SensorDataPerValue>
+//    private val serdePreAggregatedData: SpecificAvroSerde<SensorDataPreAggregation>
+//    private val serdeAggregatedData: SpecificAvroSerde<SensorDataAggregation>
+//    private val serdeAggregatedKey: SpecificAvroSerde<SensorDataAggregationKey>
 
     init {
 
@@ -28,17 +28,17 @@ class StreamProcessor(properties: StreamProperties) {
         serdeRawData = SpecificAvroSerde<SensorData>()
         serdeRawData.configure(registryConfig, false)
 
-        serdeSingleData = SpecificAvroSerde<SensorDataPerValue>()
-        serdeSingleData.configure(registryConfig, false)
-
-        serdePreAggregatedData = SpecificAvroSerde<SensorDataPreAggregation>()
-        serdePreAggregatedData.configure(registryConfig, false)
-
-        serdeAggregatedData = SpecificAvroSerde<SensorDataAggregation>()
-        serdeAggregatedData.configure(registryConfig, false)
-
-        serdeAggregatedKey = SpecificAvroSerde<SensorDataAggregationKey>()
-        serdeAggregatedKey.configure(registryConfig, true) // true because it's a key
+//        serdeSingleData = SpecificAvroSerde<SensorDataPerValue>()
+//        serdeSingleData.configure(registryConfig, false)
+//
+//        serdePreAggregatedData = SpecificAvroSerde<SensorDataPreAggregation>()
+//        serdePreAggregatedData.configure(registryConfig, false)
+//
+//        serdeAggregatedData = SpecificAvroSerde<SensorDataAggregation>()
+//        serdeAggregatedData.configure(registryConfig, false)
+//
+//        serdeAggregatedKey = SpecificAvroSerde<SensorDataAggregationKey>()
+//        serdeAggregatedKey.configure(registryConfig, true) // true because it's a key
 
         streams = KafkaStreams(createTopology(), properties.configureProperties())
         logger("Kafka Streams").info(createTopology().describe())
@@ -58,33 +58,37 @@ class StreamProcessor(properties: StreamProperties) {
 
             // Transform
             .mapValues { value -> convertTemperature(value) }                               // Fahrenheit -> Celsius
-            .flatMapValues { value -> splitDataPoints(value) }                              // One event per data point
+            .to("test-interceptor",
+            Produced.with(Serdes.String(), serdeRawData))
 
-            // Group by new key
-            .groupBy(
-                { _, value -> SensorDataAggregationKey(value.getSensorId(), value.getType()) },
-                Grouped.with(serdeAggregatedKey, serdeSingleData)                           // -> repartition topic
-            )
 
-            // Aggregate over hopping window
-            .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMillis(windowSizeInMillis)))
-            .aggregate(
-                { SensorDataPreAggregation(0.0, 0, "", "") },      // dummy initializer
-                { _, value, aggregate -> aggregateEvents(value, aggregate) },                // calculate sum and count
-                Materialized.with(serdeAggregatedKey, serdePreAggregatedData)                // -> changelog topic
-            )
-            .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
-            .toStream()
-            .mapValues { value -> calculateAverage(value) }                                 // calculate average
-
-            // Produce
-            .to(
-                "sensor-data-aggregation-streams",
-                Produced.with(
-                    WindowedSerdes.TimeWindowedSerde(serdeAggregatedKey, windowSizeInMillis),   // key serde
-                    serdeAggregatedData                                                         // value serde
-                )
-            )
+//            .flatMapValues { value -> splitDataPoints(value) }                              // One event per data point
+//
+//            // Group by new key
+//            .groupBy(
+//                { _, value -> SensorDataAggregationKey(value.getSensorId(), value.getType()) },
+//                Grouped.with(serdeAggregatedKey, serdeSingleData)                           // -> repartition topic
+//            )
+//
+//            // Aggregate over hopping window
+//            .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMillis(windowSizeInMillis)))
+//            .aggregate(
+//                { SensorDataPreAggregation(0.0, 0, "", "") },      // dummy initializer
+//                { _, value, aggregate -> aggregateEvents(value, aggregate) },                // calculate sum and count
+//                Materialized.with(serdeAggregatedKey, serdePreAggregatedData)                // -> changelog topic
+//            )
+//            .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
+//            .toStream()
+//            .mapValues { value -> calculateAverage(value) }                                 // calculate average
+//
+//            // Produce
+//            .to(
+//                "sensor-data-aggregation-streams",
+//                Produced.with(
+//                    WindowedSerdes.TimeWindowedSerde(serdeAggregatedKey, windowSizeInMillis),   // key serde
+//                    serdeAggregatedData                                                         // value serde
+//                )
+//            )
 
         return processor.build()
     }
