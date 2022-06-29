@@ -1,4 +1,5 @@
 import com.kafkaStreamsExample.*
+import io.confluent.kafka.schemaregistry.client.SchemaRegistryClientConfig
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 import org.apache.kafka.common.serialization.Serdes
@@ -24,6 +25,10 @@ class StreamProcessor(properties: StreamProperties) {
         val registryConfig = mutableMapOf<String, String>()
         registryConfig[AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG] = properties.configureProperties()
             .getProperty("schema.registry.url")
+        registryConfig[AbstractKafkaSchemaSerDeConfig.BASIC_AUTH_CREDENTIALS_SOURCE] = properties.configureProperties()
+            .getProperty("basic.auth.credentials.source")
+        registryConfig[SchemaRegistryClientConfig.USER_INFO_CONFIG] = properties.configureProperties()
+            .getProperty("schema.registry.basic.auth.user.info")
 
         serdeRawData = SpecificAvroSerde<SensorData>()
         serdeRawData.configure(registryConfig, false)

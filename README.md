@@ -11,27 +11,17 @@ This repository was used in a Confluent meetup. You can watch the recording in t
 
 ## Run locally with Docker
 
-Start entire Kafka environment with:
-```shell
-docker-compose up -d
-```
-We can then see the data flow in the control center under:
-```localhost:9021```. 
+We run the application in Confluent Cloud. Therefore, we need to provide additional
+configurations for the clients. A good start of how to deploy services in CC can be found
+[here](https://docs.confluent.io/cloud/current/client-apps/config-client.html).
+Credentials are obviously not committed and need to be inserted in the properties.
 
-### Kafka Streams
+### Kafka Producer & Kafka Streams
 
 We use [Gradle](https://gradle.org/) to build and run the Kafka Streams application:
 
 ```shell
 ./gradlew run
-```
-
-### ksqlDB
-
-In order to execute all statements, we need to open the ksqlDB client with:
-
-```shell
-docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
 ```
 
 ## Metrics
@@ -85,3 +75,6 @@ Additional sources in order to work with Avro as a schema are:
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
+
+### Confluent Cloud Config
+* [Config](https://docs.confluent.io/cloud/current/client-apps/config-client.html)

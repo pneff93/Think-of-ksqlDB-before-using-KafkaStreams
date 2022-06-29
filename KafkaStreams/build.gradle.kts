@@ -27,7 +27,7 @@ dependencies {
 
     implementation("org.apache.kafka:kafka-streams:3.0.0")
     implementation("io.confluent:kafka-avro-serializer:7.0.0")
-    implementation("io.confluent:kafka-streams-avro-serde:5.2.1")
+    implementation("io.confluent:kafka-streams-avro-serde:7.0.0")
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
