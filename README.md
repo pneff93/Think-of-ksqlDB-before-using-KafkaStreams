@@ -14,7 +14,7 @@ This repository was used in a Confluent meetup. You can watch the recording in t
 We run the application in Confluent Cloud. Therefore, we need to provide additional
 configurations for the clients. A good start of how to deploy services in CC can be found
 [here](https://docs.confluent.io/cloud/current/client-apps/config-client.html).
-Credentials are obviously not committed and need to be inserted in the properties.
+Credentials are encrypted via [blackbox](https://github.com/StackExchange/blackbox#installation-instructions).
 
 ### Kafka Producer & Kafka Streams
 
