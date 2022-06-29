@@ -9,7 +9,7 @@ This repository was used in a Confluent meetup. You can watch the recording in t
 ![](image.png)
 
 
-## Run
+## Run locally with Docker
 
 Start entire Kafka environment with:
 ```shell
