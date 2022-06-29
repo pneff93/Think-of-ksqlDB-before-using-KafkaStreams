@@ -11,6 +11,8 @@ class ProducerProperties {
         settings.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:29092")
         settings.setProperty("schema.registry.url", "http://schema-registry:8081")
 
+        settings.setProperty(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, "io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor")
+
         return settings
     }
 }

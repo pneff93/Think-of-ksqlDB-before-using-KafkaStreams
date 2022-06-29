@@ -27,6 +27,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:1.2.2")
     implementation("com.google.code.gson:gson:2.8.8")
 
+    implementation("io.confluent:monitoring-interceptors:7.0.0")
     implementation("io.confluent:kafka-avro-serializer:7.0.0")
 }
 
