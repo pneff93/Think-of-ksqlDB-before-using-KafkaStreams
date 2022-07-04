@@ -21,9 +21,9 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
-    implementation("org.apache.logging.log4j:log4j-api-kotlin:1.0.0")
-    implementation("org.apache.logging.log4j:log4j-core:2.12.0")
-    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.12.0")
+    implementation("org.apache.logging.log4j:log4j-api-kotlin:1.1.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.2")
 
     implementation("org.apache.kafka:kafka-streams:3.0.0")
     implementation("io.confluent:kafka-avro-serializer:7.0.0")
@@ -31,7 +31,8 @@ dependencies {
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
-    baseName = "fatApp"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveBaseName.set("fatApp")
     manifest {
         attributes["Main-Class"] = application.mainClass
     }
