@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streams
+  labels:
+    app: streams
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streams
+  template:
+    metadata:
+      labels:
+        app: streams
+    spec:
+      containers:
+        - name: streams
+          image: kafkastreamsmeetup22:0.1.0
+          imagePullPolicy: Never
