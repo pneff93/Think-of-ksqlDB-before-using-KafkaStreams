@@ -9,65 +9,59 @@ This repository was used in a Confluent meetup. You can watch the recording in t
 ![](image.png)
 
 
-## Run locally with Docker
+## Run on Confluent for Kubernetes (CFK) with Minikube
 
-Start entire Kafka environment with:
+### Prerequisites
+* Helm
+* Minikube
+* Docker
+* kubectl
+
+
+### Environment
+Start k8s cluster with: 
 ```shell
-docker-compose up -d
+minikube start --cpus=6 --disk-size='100gb' --memory=8192
+```
+
+Follow the instructions (1 & 2) on [Quickstart](https://docs.confluent.io/operator/current/co-quickstart.html)
+to create a `confluent` namespace and to install CFK.
+
+Deploy Kafka components with:
+```shell
+kubectl apply -f ./confluent-platform.yaml
+```
+
+### Deployment
+
+Build images:
+```shell
+docker build -t kafkaproducermeetup22:0.1.0 .
+docker build -t kafkastreamsmeetup22:0.1.0 .
+```
+
+We need to load the images into the minikube cluster:
+```shell
+minikube image load kafkaproducermeetup22:0.1.0
+minikube image load kafkastreamsmeetup22:0.1.0
+```
+
+Then we deploy images, e.g.:
+```shell
+kubectl apply -f ./KafkaProducer/Deployment.yaml
+kubectl apply -f ./KafkaStreams/Deployment.yaml
+```
+
+### See the data
+
+
+We do a port forwarding to the control center:
+```shell
+kubectl port-forward controlcenter-0 9021:9021 -n confluent
 ```
 We can then see the data flow in the control center under:
 ```localhost:9021```. 
 
-### Kafka Streams
-
-We use [Gradle](https://gradle.org/) to build and run the Kafka Streams application:
-
-```shell
-./gradlew run
-```
-
-### ksqlDB
-
-In order to execute all statements, we need to open the ksqlDB client with:
-
-```shell
-docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
-```
-
-## Metrics
-
-_Note: Metrics have been added to this repository after the Meetup._
-
-In order, to see some insight metrics we distinguish between Confluent Metrics Reporter and
-JMX (Java Management Extensions).
-
-### Confluent Metrics Reporter
-
-Simply add parameters to the environment of the broker.
-
-```shell
-KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
-CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-```
-We then can see a dashboard in the control-center (`localhost:9021`):
-
-![](./Metrics/control-center.png)
-
-
-### JMX
-
-We can export metrics from the broker and/or ksqlDB by adjusting related parameters in the
-docker-compose file. Open `jconsole` and see those metrics.
-With the JMX-exporter, we export desired metrics so that we finally can scrape them with
-Prometheus. A possible extension might be using Grafana to visualize the metrics in a 
-dashboard. However, we focussed here more on only exposing rather than using.
-
-We can either monitor all metrics under `localhost:5556` from the JXM-exporter
-or in Prometheus under `localhost:9090`.
-
-I used the code from the [streamthoughts GitHub repository](https://github.com/streamthoughts/kafka-monitoring-stack-docker-compose/tree/master/etc/jmx_exporter)
-for exporting the metrics.
 
 ## Sources
 
@@ -78,10 +72,10 @@ Additional sources in order to work with Avro as a schema are:
 * [Kafka Streams Avro Serde](https://docs.confluent.io/platform/current/streams/developer-guide/datatypes.html)
 * [ksqlDB Avro](https://docs.ksqldb.io/en/latest/reference/serialization/#avro)
 
-### Metrics
-* [Confluent Metrics Reporter](https://docs.confluent.io/platform/7.0.0/kafka/metrics-reporter.html#installation)
-* [Kafka Monitoring and Metrics using JMX](https://docs.confluent.io/platform/current/installation/docker/operations/monitoring.html)
-* [JMX Export ksqlDB](https://docs.ksqldb.io/en/latest/operate-and-deploy/monitoring/)
+### CFK
+* [Quickstart](https://docs.confluent.io/operator/current/co-quickstart.html)
+* [Deployment](https://stackoverflow.com/questions/42564058/how-to-use-local-docker-images-with-minikube)
+
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
