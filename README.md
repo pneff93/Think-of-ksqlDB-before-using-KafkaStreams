@@ -9,7 +9,7 @@ This repository was used in a Confluent meetup. You can watch the recording in t
 ![](image.png)
 
 
-## Run in Confluent Cloud
+## Run on Confluent Cloud
 
 We run the application in Confluent Cloud. Therefore, we need to provide additional
 configurations for the clients. A good start of how to deploy services in CC can be found
