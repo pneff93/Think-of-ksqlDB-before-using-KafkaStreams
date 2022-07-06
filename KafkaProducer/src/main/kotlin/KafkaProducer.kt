@@ -1,5 +1,7 @@
 import com.google.gson.Gson
 import com.kafkaStreamsExample.SensorData
+import org.apache.kafka.clients.admin.KafkaAdminClient
+import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.logging.log4j.kotlin.logger
@@ -10,6 +12,12 @@ class KafkaProducer {
 
     private val logger = logger(javaClass.name)
     private val gson = Gson()
+
+    fun createTopic(properties: ProducerProperties) {
+
+        val client = KafkaAdminClient.create(properties.configureProperties())
+        client.createTopics(listOf(NewTopic("sensor-data-raw", 3, 1)))
+    }
 
     fun produceEvents(properties: ProducerProperties, data: List<String>): Thread {
 

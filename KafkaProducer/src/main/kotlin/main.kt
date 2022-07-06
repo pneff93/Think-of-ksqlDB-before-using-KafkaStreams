@@ -8,6 +8,8 @@ fun main() {
 
     val sensorData = SensorData::class.java.getResource("/sensorData.txt").readText().split("\n")
 
+    kafkaProducer.createTopic(properties)
+
     runBlocking {
 
         while (true) {
