@@ -29,7 +29,8 @@ We use [Gradle](https://gradle.org/) to build and run the applications:
 
 We can get metrics of the cluster (not clients) via the Metrics API. It provides two endpoints:
 `/query` to get the metrics directly and `/export` which can be used by Prometheus.
-[Here](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html#prometheus) you can find a good starting point.
+[Here](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html#prometheus) you can find a good starting point
+with many query examples.
 
 ### `/query`
 
