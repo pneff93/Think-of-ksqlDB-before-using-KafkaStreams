@@ -11,10 +11,11 @@ This repository was used in a Confluent meetup. You can watch the recording in t
 
 ## Run on Confluent Cloud
 
-We run the application in Confluent Cloud. Therefore, we need to provide additional
+We run the application on Confluent Cloud (CC). Therefore, we need to provide additional
 configurations for the clients. A good start of how to deploy services in CC can be found
 [here](https://docs.confluent.io/cloud/current/client-apps/config-client.html).
-Credentials are encrypted via [blackbox](https://github.com/StackExchange/blackbox#installation-instructions).
+Credentials are encrypted via [blackbox](https://github.com/StackExchange/blackbox#installation-instructions)
+and need to be inserted in the corresponding property files.
 
 ### Kafka Producer & Kafka Streams
 
@@ -23,6 +24,80 @@ We use [Gradle](https://gradle.org/) to build and run the applications:
 ```shell
 ./gradlew run
 ```
+
+## Metrics API
+
+We can get metrics of the cluster (not clients) via the Metrics API. It provides two endpoints:
+`/query` to get the metrics directly and `/export` which can be used by Prometheus.
+[Here](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html#prometheus) you can find a good starting point.
+
+### `/query`
+
+Use a cloud API key and execute to get the bytes being sent:
+
+```shell
+http 'https://api.telemetry.confluent.cloud/v2/metrics/cloud/query' --auth 'key:secret' < metrics_query.json
+```
+Make sure to have a valid `timestamp` and the correct `clusterId` in your query file.
+You should receive something likes this:
+
+````json
+{
+    "data": [
+        {
+            "metric.topic": "sensor-data-aggregation-streams",
+            "timestamp": "2022-07-08T11:00:00Z",
+            "value": 1188.0
+        },
+        {
+            "metric.topic": "sensor-data-aggregation-streams",
+            "timestamp": "2022-07-08T12:00:00Z",
+            "value": 0.0
+        },
+        {
+            "metric.topic": "sensor-data-raw",
+            "timestamp": "2022-07-08T11:00:00Z",
+            "value": 111384.0
+        },
+        {
+            "metric.topic": "sensor-data-raw",
+            "timestamp": "2022-07-08T12:00:00Z",
+            "value": 19992.0
+        },
+        {
+            "metric.topic": "streamsId-KSTREAM-AGGREGATE-STATE-STORE-0000000004-changelog",
+            "timestamp": "2022-07-08T11:00:00Z",
+            "value": 0.0
+        },
+        {
+            "metric.topic": "streamsId-KSTREAM-AGGREGATE-STATE-STORE-0000000004-changelog",
+            "timestamp": "2022-07-08T12:00:00Z",
+            "value": 0.0
+        },
+        {
+            "metric.topic": "streamsId-KSTREAM-AGGREGATE-STATE-STORE-0000000004-repartition",
+            "timestamp": "2022-07-08T11:00:00Z",
+            "value": 185855.0
+        },
+        {
+            "metric.topic": "streamsId-KSTREAM-AGGREGATE-STATE-STORE-0000000004-repartition",
+            "timestamp": "2022-07-08T12:00:00Z",
+            "value": 38400.0
+        },
+        {
+            "metric.topic": "streamsId-KTABLE-SUPPRESS-STATE-STORE-0000000010-changelog",
+            "timestamp": "2022-07-08T11:00:00Z",
+            "value": 25751.0
+        },
+        {
+            "metric.topic": "streamsId-KTABLE-SUPPRESS-STATE-STORE-0000000010-changelog",
+            "timestamp": "2022-07-08T12:00:00Z",
+            "value": 0.0
+        }
+    ]
+}
+````
+
 
 ## Sources
 
@@ -33,13 +108,13 @@ Additional sources in order to work with Avro as a schema are:
 * [Kafka Streams Avro Serde](https://docs.confluent.io/platform/current/streams/developer-guide/datatypes.html)
 * [ksqlDB Avro](https://docs.ksqldb.io/en/latest/reference/serialization/#avro)
 
-### Metrics
-* [Confluent Metrics Reporter](https://docs.confluent.io/platform/7.0.0/kafka/metrics-reporter.html#installation)
-* [Kafka Monitoring and Metrics using JMX](https://docs.confluent.io/platform/current/installation/docker/operations/monitoring.html)
-* [JMX Export ksqlDB](https://docs.ksqldb.io/en/latest/operate-and-deploy/monitoring/)
+### Confluent Cloud Config
+* [Config](https://docs.confluent.io/cloud/current/client-apps/config-client.html)
+
+### Metrics API
+* [Metrics Overview](https://docs.confluent.io/cloud/current/client-apps/monitoring.html)
+* [Examples](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html#query-for-bytes-sent-to-consumers-per-minute-grouped-by-topic)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
 
-### Confluent Cloud Config
-* [Config](https://docs.confluent.io/cloud/current/client-apps/config-client.html)
