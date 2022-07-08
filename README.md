@@ -36,7 +36,9 @@ docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
 
 ## Metrics
 
-_Note: Metrics have been added to this repository after the Meetup._
+_Note: Metrics have been added to this repository after the Meetup.
+For a great repository containing metrics as well as the visualization with
+Grafana, I refer to [kafka-platform-prometheus](https://github.com/jeanlouisboudart/kafka-platform-prometheus)._
 
 In order, to see some insight metrics we distinguish between Confluent Metrics Reporter and
 JMX (Java Management Extensions).
