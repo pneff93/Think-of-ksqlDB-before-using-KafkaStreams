@@ -51,28 +51,13 @@ You should receive something likes this:
             "value": 1188.0
         },
         {
-            "metric.topic": "sensor-data-aggregation-streams",
-            "timestamp": "2022-07-08T12:00:00Z",
-            "value": 0.0
-        },
-        {
             "metric.topic": "sensor-data-raw",
             "timestamp": "2022-07-08T11:00:00Z",
             "value": 111384.0
         },
         {
-            "metric.topic": "sensor-data-raw",
-            "timestamp": "2022-07-08T12:00:00Z",
-            "value": 19992.0
-        },
-        {
             "metric.topic": "streamsId-KSTREAM-AGGREGATE-STATE-STORE-0000000004-changelog",
             "timestamp": "2022-07-08T11:00:00Z",
-            "value": 0.0
-        },
-        {
-            "metric.topic": "streamsId-KSTREAM-AGGREGATE-STATE-STORE-0000000004-changelog",
-            "timestamp": "2022-07-08T12:00:00Z",
             "value": 0.0
         },
         {
@@ -81,24 +66,24 @@ You should receive something likes this:
             "value": 185855.0
         },
         {
-            "metric.topic": "streamsId-KSTREAM-AGGREGATE-STATE-STORE-0000000004-repartition",
-            "timestamp": "2022-07-08T12:00:00Z",
-            "value": 38400.0
-        },
-        {
             "metric.topic": "streamsId-KTABLE-SUPPRESS-STATE-STORE-0000000010-changelog",
             "timestamp": "2022-07-08T11:00:00Z",
             "value": 25751.0
-        },
-        {
-            "metric.topic": "streamsId-KTABLE-SUPPRESS-STATE-STORE-0000000010-changelog",
-            "timestamp": "2022-07-08T12:00:00Z",
-            "value": 0.0
         }
     ]
 }
 ````
 
+### `/export` with Grafana Cloud
+
+Now, we want to use the integration with Grafana Cloud. In order to do so:
+
+* Create free Grafana Cloud account
+* Follow the steps in CC under dashboard -> explore metrics
+
+Grafana automatically creates a default dashboard which looks like this:
+
+![](GrafanaCloud.png)
 
 ## Sources
 
@@ -115,6 +100,7 @@ Additional sources in order to work with Avro as a schema are:
 ### Metrics API
 * [Metrics Overview](https://docs.confluent.io/cloud/current/client-apps/monitoring.html)
 * [Examples](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html#query-for-bytes-sent-to-consumers-per-minute-grouped-by-topic)
+* [Integration Grafana Cloud](https://grafana.com/docs/grafana-cloud/integrations/integrations/integration-confluent-cloud/)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
