@@ -1,2 +1,3 @@
+CCloudCred.json
 CCloudCred.txt
 audit-logs.json
