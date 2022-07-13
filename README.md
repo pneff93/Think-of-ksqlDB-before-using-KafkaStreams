@@ -85,6 +85,22 @@ Grafana automatically creates a default dashboard which looks like this:
 
 ![](GrafanaCloud.png)
 
+## Audit Logs
+Each auditable event includes information about who tried to do what,
+when they tried, and whether or not the system gave permission to proceed.
+Standard clusters and Dedicated clusters support audit logs, which are enabled by default.
+Basic clusters do not include audit logs.
+
+To see those logs follow the steps in the burger menu under Audit log:
+
+* Login to Confluent CLI
+* Change to cluster and environment from `confluent audit-log describe`
+* Create and use API key (important use the provided service account while doing so)
+* You can then consume the audit logs via `confluent kafka topic consume confluent-audit-log-events`
+
+I then created a topic and could see it within the logs.
+It is encrypted in the [audit-logs.json.gpg](audit-logs.json.gpg) file.
+
 ## Sources
 
 ### Schema Registry
@@ -101,6 +117,10 @@ Additional sources in order to work with Avro as a schema are:
 * [Metrics Overview](https://docs.confluent.io/cloud/current/client-apps/monitoring.html)
 * [Examples](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html#query-for-bytes-sent-to-consumers-per-minute-grouped-by-topic)
 * [Integration Grafana Cloud](https://grafana.com/docs/grafana-cloud/integrations/integrations/integration-confluent-cloud/)
+
+### Audit Logs
+* [Quickstart](https://docs.confluent.io/cloud/current/monitoring/audit-logging/configure.html)
+* [Documentation](https://docs.confluent.io/platform/current/security/audit-logs/audit-logs-concepts.html)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
