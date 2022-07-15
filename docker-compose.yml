@@ -11,124 +11,73 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  broker:
+  broker-1:
     image: confluentinc/cp-enterprise-kafka:7.0.0
-    hostname: broker
-    container_name: broker
+    hostname: broker-1
+    container_name: broker-1
     depends_on:
       - zookeeper
     ports:
-      - 9092:9092
+      - 9091:9091
       - 9991:9991
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: EXTERNAL://broker:29092,INTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker-1:19092,EXTERNAL://localhost:9091
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker-1:19092
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
       KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
       KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 5000
       KAFKA_JMX_PORT: 9991
 
-  schema-registry:
-    image: confluentinc/cp-schema-registry:7.0.0
-    hostname: schema-registry
-    container_name: schema-registry
+  broker-2:
+    image: confluentinc/cp-enterprise-kafka:7.0.0
+    hostname: broker-2
+    container_name: broker-2
     depends_on:
-      - broker
+      - zookeeper
     ports:
-      - 8081:8081
+      - 9092:9092
+      - 9992:9992
     environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
-      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
-
-  ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:7.0.0
-    hostname: ksqldb-server
-    container_name: ksqldb-server
-    depends_on:
-      - broker
-    ports:
-      - 8088:8088
-      - 1099:1099
-    environment:
-      KSQL_CONFIG_DIR: "/etc/ksql"
-      KSQL_BOOTSTRAP_SERVERS: broker:29092
-      KSQL_HOST_NAME: ksqldb-server
-      KSQL_LISTENERS: "http://0.0.0.0:8088"
-      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-      KSQL_JMX_OPTS: >
-        -Djava.rmi.server.hostname=localhost
-        -Dcom.sun.management.jmxremote
-        -Dcom.sun.management.jmxremote.port=1099
-        -Dcom.sun.management.jmxremote.authenticate=false
-        -Dcom.sun.management.jmxremote.ssl=false
-        -Dcom.sun.management.jmxremote.rmi.port=1099
-
-  ksqldb-cli:
-    image: confluentinc/cp-ksqldb-cli:7.0.0
-    container_name: ksqldb-cli
-    depends_on:
-      - ksqldb-server
-    entrypoint: /bin/sh
-    tty: true
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://broker-2:29092,EXTERNAL://localhost:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker-2:29092
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
+      KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
+      KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 5000
+      KAFKA_JMX_PORT: 9992
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:7.0.0
-    hostname: control-center
-    container_name: control-center
-    depends_on:
-      - broker
-      - schema-registry
-      - ksqldb-server
-    ports:
-      - 9021:9021
-    environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
-      CONTROL_CENTER_KSQL_KSQLDB1_URL: "http://ksqldb-server:8088"
-      CONTROL_CENTER_KSQL_KSQLDB1_ADVERTISED_URL: "http://localhost:8088"
-      CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-      CONTROL_CENTER_REPLICATION_FACTOR: 1
-      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
-      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
-      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
-      PORT: 9021
-
-  kafkaProducerMeetup22:
-    image: kafkaproducermeetup22:0.1.0
-    build: ./KafkaProducer
-    container_name: kafka-producer
-    depends_on:
-      - broker
-      - schema-registry
-
-  prometheus:
-    image: prom/prometheus:main
-    hostname: prometheus
-    container_name: prometheus
-    ports:
-      - 9090:9090
-    volumes:
-      - ./Metrics/prometheus:/etc/prometheus
-
-  jmx-exporter:
-    image: sscaling/jmx-prometheus-exporter:0.12.0
-    container_name: jmx-exporter
-    hostname: jmx-exporter
-    ports:
-      - 5556:5556
-    depends_on:
-      - broker
-    environment:
-      CONFIG_YML: "/etc/jmx_exporter/config.yml"
-    volumes:
-      - ./Metrics/jmx-exporter/jmx-exporter.yml:/etc/jmx_exporter/config.yml
+     image: confluentinc/cp-enterprise-control-center:7.0.0
+     hostname: control-center
+     container_name: control-center
+     depends_on:
+       - broker-1
+       - broker-2
+     ports:
+       - 9021:9021
+     environment:
+       CONTROL_CENTER_BOOTSTRAP_SERVERS: broker-1:19092,broker-2:29092
+       CONTROL_CENTER_REPLICATION_FACTOR: 1
+       CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
+       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+       PORT: 9021
