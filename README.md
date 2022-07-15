@@ -1,4 +1,4 @@
-# Think of ksqlDB before using Kafka Streams
+# Think of ksqlDB before using Kafka Streams - Secured
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
@@ -6,7 +6,34 @@ A streaming data pipeline typically consists of data transformation, wrangling, 
 
 This repository was used in a Confluent meetup. You can watch the recording in the [Community Forum](https://forum.confluent.io/t/recording-ready-to-view-speaker-q-a-thread-30-march-2022-think-of-using-ksqldb-before-using-kafka-streams/4450).
 
-![](image.png)
+Here, we focus on a secured environment.
+
+## Set up Security
+
+We set up security step by step consisting of: 
+* data encryption via SSL
+* authentication
+* authorization via ACLs
+
+### SSL Data Encryption
+
+Overall, we need to 
+1. create Certificate Authority, Key Store and Trust Store
+2. set up SSL on the Kafka Brokers
+3. set up SSL on the Kafka Clients
+
+A detailed explanation can be found [here](./SSL).
+Once set up, we can either produce and consume messages via CLI:
+```shell
+kafka-console-producer  --broker-list localhost:19093 --topic topic-1  --producer.config SSL/client-creds/client.properties
+```
+```shell
+kafka-console-consumer --bootstrap-server localhost:19093 --topic topic-1 --from-beginning --consumer.config SSL/client-creds/client.properties
+```
+Or we run our pipeline:
+```shell
+./gradlew run
+```
 
 
 ## Run locally with Docker
@@ -26,64 +53,14 @@ We use [Gradle](https://gradle.org/) to build and run the Kafka Streams applicat
 ./gradlew run
 ```
 
-### ksqlDB
-
-In order to execute all statements, we need to open the ksqlDB client with:
-
-```shell
-docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
-```
-
-## Metrics
-
-_Note: Metrics have been added to this repository after the Meetup.
-For a great repository containing metrics as well as the visualization with
-Grafana, I refer to [kafka-platform-prometheus](https://github.com/jeanlouisboudart/kafka-platform-prometheus)._
-
-In order, to see some insight metrics we distinguish between Confluent Metrics Reporter and
-JMX (Java Management Extensions).
-
-### Confluent Metrics Reporter
-
-Simply add parameters to the environment of the broker.
-
-```shell
-KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
-CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-```
-We then can see a dashboard in the control-center (`localhost:9021`):
-
-![](./Metrics/control-center.png)
-
-
-### JMX
-
-We can export metrics from the broker and/or ksqlDB by adjusting related parameters in the
-docker-compose file. Open `jconsole` and see those metrics.
-With the JMX-exporter, we export desired metrics so that we finally can scrape them with
-Prometheus. A possible extension might be using Grafana to visualize the metrics in a 
-dashboard. However, we focussed here more on only exposing rather than using.
-
-We can either monitor all metrics under `localhost:5556` from the JXM-exporter
-or in Prometheus under `localhost:9090`.
-
-I used the code from the [streamthoughts GitHub repository](https://github.com/streamthoughts/kafka-monitoring-stack-docker-compose/tree/master/etc/jmx_exporter)
-for exporting the metrics.
 
 ## Sources
 
-### Schema Registry
 Additional sources in order to work with Avro as a schema are:
 
-* [Gradle Avro plugin](https://github.com/davidmc24/gradle-avro-plugin)
-* [Kafka Streams Avro Serde](https://docs.confluent.io/platform/current/streams/developer-guide/datatypes.html)
-* [ksqlDB Avro](https://docs.ksqldb.io/en/latest/reference/serialization/#avro)
+* [Security Course](https://www.udemy.com/course/apache-kafka-security/)
+* [SSL Key creation](https://mariadb.com/docs/security/data-in-transit-encryption/create-self-signed-certificates-keys-openssl/)
 
-### Metrics
-* [Confluent Metrics Reporter](https://docs.confluent.io/platform/7.0.0/kafka/metrics-reporter.html#installation)
-* [Kafka Monitoring and Metrics using JMX](https://docs.confluent.io/platform/current/installation/docker/operations/monitoring.html)
-* [JMX Export ksqlDB](https://docs.ksqldb.io/en/latest/operate-and-deploy/monitoring/)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
