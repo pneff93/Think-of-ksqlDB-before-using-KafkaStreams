@@ -83,4 +83,3 @@ settings.setProperty(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL")
 settings.setProperty(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "secret")
 settings.setProperty(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "src/main/resources/kafka.client.truststore.jks")
 ```
-We can now produce and consume messages by adding this configuration file to our command:
