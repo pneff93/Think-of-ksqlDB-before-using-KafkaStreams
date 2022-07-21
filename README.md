@@ -66,7 +66,7 @@ Additional sources in order to work with Avro as a schema are:
 
 * [Security Course](https://www.udemy.com/course/apache-kafka-security/)
 * [SSL Key creation](https://mariadb.com/docs/security/data-in-transit-encryption/create-self-signed-certificates-keys-openssl/)
-
+* [SSL Config](https://docs.confluent.io/platform/current/kafka/authentication_ssl.html#sr)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/

@@ -47,6 +47,7 @@ services:
       KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
       KAFKA_SSL_TRUSTSTORE_CREDENTIALS: credentials
       KAFKA_SSL_CLIENT_AUTH: "required"
+#      KAFKA_SECURITY_INTER_BROKER_PROTOCOL: SSL
 
   broker-2:
     image: confluentinc/cp-enterprise-kafka:7.0.0
@@ -84,6 +85,7 @@ services:
       KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
       KAFKA_SSL_TRUSTSTORE_CREDENTIALS: credentials
       KAFKA_SSL_CLIENT_AUTH: "required"
+#      KAFKA_SECURITY_INTER_BROKER_PROTOCOL: SSL
 
   control-center:
      image: confluentinc/cp-enterprise-control-center:7.0.0
@@ -113,7 +115,16 @@ services:
       - broker-2
     ports:
       - 8081:8081
+    volumes:
+      - $PWD/SSL/schema-creds:/etc/kafka/secrets
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker-1:29092,broker-2:29092'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCL: SSL
+      SCHEMA_REGISTRY_KAFKASTORE_SSL_KEYSTORE_FILENAME: kafka.sr.keystore.jks
+      SCHEMA_REGISTRY_KAFKASTORE_SSL_KEYSTORE_CREDENTIALS: credentials
+      SCHEMA_REGISTRY_KAFKASTORE_SSL_KEY_CREDENTIALS: credentials
+      SCHEMA_REGISTRY_KAFKASTORE_SSL_TRUSTSTORE_FILENAME: kafka.sr.truststore.jks
+      SCHEMA_REGISTRY_KAFKASTORE_SSL_TRUSTSTORE_CREDENTIALS: credentials
