@@ -17,6 +17,10 @@ class ProducerProperties {
         settings.setProperty(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "secret")
         settings.setProperty(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "src/main/resources/kafka.client.truststore.jks")
 
+        settings.setProperty(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "src/main/resources/kafka.client.keystore.jks")
+        settings.setProperty(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "secret")
+        settings.setProperty(SslConfigs.SSL_KEY_PASSWORD_CONFIG, "secret")
+
         return settings
     }
 }
