@@ -46,6 +46,7 @@ services:
       KAFKA_SSL_KEY_CREDENTIALS: credentials
       KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
       KAFKA_SSL_TRUSTSTORE_CREDENTIALS: credentials
+      KAFKA_SSL_CLIENT_AUTH: "required"
 
   broker-2:
     image: confluentinc/cp-enterprise-kafka:7.0.0
@@ -82,6 +83,7 @@ services:
       KAFKA_SSL_KEY_CREDENTIALS: credentials
       KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.server.truststore.jks
       KAFKA_SSL_TRUSTSTORE_CREDENTIALS: credentials
+      KAFKA_SSL_CLIENT_AUTH: "required"
 
   control-center:
      image: confluentinc/cp-enterprise-control-center:7.0.0

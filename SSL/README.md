@@ -1,6 +1,6 @@
 # SSL Encryption
 
-![](SSL.png)
+![](SSL_encry.png)
 
 ## 1. Create certificates and stores
 
@@ -83,3 +83,60 @@ settings.setProperty(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL")
 settings.setProperty(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, "secret")
 settings.setProperty(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, "src/main/resources/kafka.client.truststore.jks")
 ```
+
+
+# SSL Authentication 
+
+It is a two-way authentication, so called mutual TLS (mTLS).
+Before, only the client were verifying the broker certificates. Now, both verify each other.
+Overall, we do the same process (creating and inserting certificates into the key store) as we did for the Kafka server.
+
+![](SSL_auth.png)
+
+## Set up Key Store for Clients
+
+_change the directory to the client-creds folder_
+
+Create Key Store `kafka.client.keystore.jks`
+```shell
+keytool -genkey -noprompt -dname "CN=localhost" -keystore kafka.client.keystore.jks -keyalg RSA -storepass secret -keypass secret -validity 36500
+```
+
+Create a certificate `client-cert-sign-request` in the Key Store (which should be signed)
+```shell
+keytool -keystore kafka.client.keystore.jks -certreq -file client-cert-sign-request -storepass secret -keypass secret
+```
+
+Let the certificate from the Key Store signed by the CA `client-cert-sign-signed`
+```shell
+openssl x509 -req -CA ../CA/ca-cert -CAkey ../CA/ca-key -in client-cert-sign-request -out client-cert-sign-signed -days 36500 -CAcreateserial -passin pass:secret
+```
+
+Import CA certificate and signed certificate into the Key Store
+```shell
+keytool -keystore kafka.client.keystore.jks -alias CARoot -import -file ../CA/ca-cert -storepass secret -keypass secret -noprompt
+keytool -keystore kafka.client.keystore.jks -import -file client-cert-sign-signed -storepass secret -keypass secret -noprompt
+```
+
+## Configure Kafka Brokers
+
+```yaml
+KAFKA_SSL_CLIENT_AUTH: "required"
+```
+
+## Configure Clients
+
+We need to add the Key Store related configs to the properties as well.
+
+```kotlin
+settings.setProperty(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, "src/main/resources/kafka.client.keystore.jks")
+settings.setProperty(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, "secret")
+settings.setProperty(SslConfigs.SSL_KEY_PASSWORD_CONFIG, "secret")
+```
+
+If we do not add them we receive the following error:
+```
+org.apache.kafka.common.errors.SslAuthenticationException: Failed to process post-handshake messages
+Caused by: javax.net.ssl.SSLException: Tag mismatch!
+```
+

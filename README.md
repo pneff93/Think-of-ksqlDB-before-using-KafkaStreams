@@ -13,16 +13,23 @@ Here, we focus on a secured environment.
 We set up security step by step consisting of: 
 * data encryption via SSL
 * authentication
+  * SSL (mTLS)
 * authorization via ACLs
 
-### SSL Data Encryption
+### SSL Data Encryption (TLS)
 
 Overall, we need to 
 1. create Certificate Authority, Key Store and Trust Store
 2. set up SSL on the Kafka Brokers
 3. set up SSL on the Kafka Clients
 
-A detailed explanation can be found [here](./SSL).
+### SSL Authentication (mTLS, two-way authentication)
+Overall, we need to
+1. create Key Store for Clients
+2. configure Kafka Brokers
+3. configure Clients
+
+A detailed explanation about SSL can be found [here](./SSL).
 Once set up, we can either produce and consume messages via CLI:
 ```shell
 kafka-console-producer  --broker-list localhost:19093 --topic topic-1  --producer.config SSL/client-creds/client.properties
@@ -34,7 +41,6 @@ Or we run our pipeline:
 ```shell
 ./gradlew run
 ```
-
 
 ## Run locally with Docker
 
