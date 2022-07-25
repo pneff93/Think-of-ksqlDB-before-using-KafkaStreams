@@ -28,9 +28,9 @@ We skip to implement SASL as authentication.
 
 We work with two hosts `PLAIN` (unsecured) and `SSL` (secured); both have
 the same hostname but different ports.
-Because we do not secure Schema Registry and Control Center, they are
-using the `PLAIN` host, whereas the Producer and Consumer clients use the
-`SSL` one.
+* Inter Broker communication is using `SSL`
+* the Producer and Consumer clients are using `SSL`
+* Schema Registry and Control Center are using the `PLAIN`
 
 ### SSL Data Encryption (TLS) & Authentication (mTLS, two-way authentication)
 
