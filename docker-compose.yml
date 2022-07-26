@@ -21,13 +21,14 @@ services:
       - 9091:9091
       - 9991:9991
       - 19093:19093
+      - 19094:19094
     volumes:
       - ./SSL/broker-1-creds:/etc/kafka/secrets
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAIN://broker-1:19092,SSL://broker-1:19093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAIN:PLAINTEXT,SSL:SSL
+      KAFKA_ADVERTISED_LISTENERS: PLAIN://broker-1:19092,SSL://broker-1:19093,SASL://broker-1:19094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAIN:PLAINTEXT,SSL:SSL,SASL:SASL_SSL
       KAFKA_INTER_BROKER_LISTENER_NAME: SSL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
@@ -41,12 +42,21 @@ services:
       KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 5000
       KAFKA_JMX_PORT: 9991
 
+      # SSL
       KAFKA_SSL_KEYSTORE_FILENAME: kafka.broker-1.keystore.jks
       KAFKA_SSL_KEYSTORE_CREDENTIALS: broker-1_credentials
       KAFKA_SSL_KEY_CREDENTIALS: broker-1_credentials
       KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.broker-1.truststore.jks
       KAFKA_SSL_TRUSTSTORE_CREDENTIALS: broker-1_credentials
       KAFKA_SSL_CLIENT_AUTH: "required"
+
+      # SASL
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_LISTENER_NAME_SASL_PLAIN_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required \
+              username="broker-1" \
+              password="broker-1-secret" \
+              user_client="client-secret";
 
   broker-2:
     image: confluentinc/cp-enterprise-kafka:7.0.0
@@ -58,13 +68,14 @@ services:
       - 9092:9092
       - 9992:9992
       - 29093:29093
+      - 29094:29094
     volumes:
       - ./SSL/broker-2-creds:/etc/kafka/secrets
     environment:
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAIN://broker-2:29092,SSL://broker-2:29093
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAIN:PLAINTEXT,SSL:SSL
+      KAFKA_ADVERTISED_LISTENERS: PLAIN://broker-2:29092,SSL://broker-2:29093,SASL://broker-2:29094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAIN:PLAINTEXT,SSL:SSL,SASL:SASL_SSL
       KAFKA_INTER_BROKER_LISTENER_NAME: SSL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
@@ -78,12 +89,21 @@ services:
       KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 5000
       KAFKA_JMX_PORT: 9992
 
+      # SSL
       KAFKA_SSL_KEYSTORE_FILENAME: kafka.broker-2.keystore.jks
       KAFKA_SSL_KEYSTORE_CREDENTIALS: broker-2_credentials
       KAFKA_SSL_KEY_CREDENTIALS: broker-2_credentials
       KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.broker-2.truststore.jks
       KAFKA_SSL_TRUSTSTORE_CREDENTIALS: broker-2_credentials
       KAFKA_SSL_CLIENT_AUTH: "required"
+
+      # SASL
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_LISTENER_NAME_SASL_PLAIN_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required \
+              username="broker-2" \
+              password="broker-2-secret" \
+              user_client="client-secret";
 
   control-center:
      image: confluentinc/cp-enterprise-control-center:7.0.0

@@ -21,18 +21,18 @@ We can then see the data flow in the Control Center under:
 
 We set up security step by step consisting of: 
 * data encryption via SSL
-* authentication via SSL (mTLS)
+* authentication
+  * via SSL (mTLS)
+  * via SASL (Plain)
 * authorization via ACLs
 
-We skip to implement SASL as authentication.
-
-We work with two hosts `PLAIN` (unsecured) and `SSL` (secured); both have
-the same hostname but different ports.
+We work with three hosts `PLAIN` (unsecured), `SSL` (secured), and `SASL_SSL` (secured); 
+all have the same hostname but different ports.
 * Inter Broker communication is using `SSL`
-* the Producer and Consumer clients are using `SSL`
+* the Producer and Consumer clients are using `SSL` or `SASL` depending on the port
 * Schema Registry and Control Center are using the `PLAIN`
 
-### SSL Data Encryption (TLS) & Authentication (mTLS, two-way authentication)
+### SSL Data Encryption (TLS) & Authentication (mTLS, two-way authentication) -> SSL
 
 Overall, we need to 
 1. create Certificate Authority, Key Store and Trust Store
@@ -47,7 +47,27 @@ kafka-console-producer  --broker-list broker-1:19093 --topic topic-1  --producer
 ```shell
 kafka-console-consumer --bootstrap-server broker-1:19093 --topic topic-1 --from-beginning --consumer.config SSL/client-creds/client.properties
 ```
-Or we run our pipeline:
+
+### SASL Authentication and SSL Data Encryption -> SASL_SSL
+
+Because we use `SASL` Plain username and passwords are available in plaintext.
+Therefore, we just need a Java Authentication and Authorization Service (JAAS) file.
+
+A detailed explanation about configuring SASL can be found [here](./SASL).
+
+Once set up, we can either produce and consume messages via CLI:
+```shell
+kafka-console-producer  --broker-list broker-1:19094 --topic topic-1  --producer.config SASL/client.properties
+```
+
+```shell
+kafka-console-consumer --bootstrap-server broker-1:19094 --topic topic-1 --consumer.config SASL/client.properties --from-beginning
+```
+
+### Run pipeline
+
+To run the pipeline, choose either `SSL` or `SASL_SSL` by commenting 
+the configuration. Then run:
 ```shell
 ./gradlew run
 ```
@@ -60,6 +80,7 @@ Additional sources in order to work with Avro as a schema are:
 * [Security Course](https://www.udemy.com/course/apache-kafka-security/)
 * [SSL Key creation](https://mariadb.com/docs/security/data-in-transit-encryption/create-self-signed-certificates-keys-openssl/)
 * [SSL Certificates creation](https://docs.confluent.io/platform/current/security/security_tutorial.html#configuring-host-name-verification)
+* [SASL](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html#auth-sasl-plain-broker-config)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
