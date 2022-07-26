@@ -29,7 +29,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAIN://broker-1:19092,SSL://broker-1:19093,SASL://broker-1:19094
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAIN:PLAINTEXT,SSL:SSL,SASL:SASL_SSL
-      KAFKA_INTER_BROKER_LISTENER_NAME: SSL
+      KAFKA_INTER_BROKER_LISTENER_NAME: SASL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -54,8 +54,10 @@ services:
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_LISTENER_NAME_SASL_PLAIN_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required \
-              username="broker-1" \
-              password="broker-1-secret" \
+              username="broker1" \
+              password="broker1-secret" \
+              user_broker1="broker1-secret" \
+              user_broker2="broker2-secret" \
               user_client="client-secret";
 
   broker-2:
@@ -76,7 +78,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAIN://broker-2:29092,SSL://broker-2:29093,SASL://broker-2:29094
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAIN:PLAINTEXT,SSL:SSL,SASL:SASL_SSL
-      KAFKA_INTER_BROKER_LISTENER_NAME: SSL
+      KAFKA_INTER_BROKER_LISTENER_NAME: SASL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
@@ -101,8 +103,10 @@ services:
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
       KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
       KAFKA_LISTENER_NAME_SASL_PLAIN_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required \
-              username="broker-2" \
-              password="broker-2-secret" \
+              username="broker2" \
+              password="broker2-secret" \
+              user_broker1="broker1-secret" \
+              user_broker2="broker2-secret" \
               user_client="client-secret";
 
   control-center:

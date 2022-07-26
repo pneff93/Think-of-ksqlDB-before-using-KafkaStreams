@@ -23,13 +23,13 @@ We set up security step by step consisting of:
 * data encryption via SSL
 * authentication
   * via SSL (mTLS)
-  * via SASL (Plain)
+  * via SASL Plain
 * authorization via ACLs
 
 We work with three hosts `PLAIN` (unsecured), `SSL` (secured), and `SASL_SSL` (secured); 
 all have the same hostname but different ports.
-* Inter Broker communication is using `SSL`
-* the Producer and Consumer clients are using `SSL` or `SASL` depending on the port
+* Inter Broker communication is using `SASL_SSL` (previous `SSL`)
+* The Producer and Consumer clients are using `SSL` or `SASL_SSL` depending on the port
 * Schema Registry and Control Center are using the `PLAIN`
 
 ### SSL Data Encryption (TLS) & Authentication (mTLS, two-way authentication) -> SSL
