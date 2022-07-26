@@ -1,4 +1,4 @@
-# Think of ksqlDB before using Kafka Streams - SSL
+# Think of ksqlDB before using Kafka Streams
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
@@ -6,7 +6,7 @@ A streaming data pipeline typically consists of data transformation, wrangling, 
 
 This repository was used in a Confluent meetup. You can watch the recording in the [Community Forum](https://forum.confluent.io/t/recording-ready-to-view-speaker-q-a-thread-30-march-2022-think-of-using-ksqldb-before-using-kafka-streams/4450).
 
-Here, we focus on a secured environment using SSL.
+Here, we focus on a secured environment using SSL and SASL_SSL.
 
 ## Run locally with Docker
 
@@ -30,7 +30,7 @@ We work with three hosts `PLAIN` (unsecured), `SSL` (secured), and `SASL_SSL` (s
 all have the same hostname but different ports.
 * Inter Broker communication is using `SASL_SSL` (previous `SSL`)
 * The Producer and Consumer clients are using `SSL` or `SASL_SSL` depending on the port
-* Schema Registry and Control Center are using the `PLAIN`
+* Schema Registry and Control Center are using `PLAIN`
 
 ### SSL Data Encryption (TLS) & Authentication (mTLS, two-way authentication) -> SSL
 

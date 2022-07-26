@@ -12,6 +12,9 @@ openssl req -new -newkey rsa:4096 -x509 -subj "/CN=Kafka-Security-CA" -keyout ca
 ```
 
 ### Key Store
+
+The Key Store is needed for every server.
+
 It is the most critical part since it needs to route for all connections.
 We set `"SAN=dns:$i,dns:localhost"` so that it can be used internally as 
 well as externally. Moreover, we edit the `/etc/host` file to map localhost to broker-1 and broker-2.
@@ -33,7 +36,12 @@ keytool -list -v -keystore kafka.broker-1.keystore.jks
 
 ### Trust Store
 
-In the Trust Store we just store the public certifcate of the CA
+In the Trust Store we just store the public certificate of the CA.
+It is needed for every client. 
+
+Brokers for instance are both server
+(for producer/consumer) and client (inter broker connection).
+Therefore, they need a Key Store and Trust Store.
 
 
 
@@ -79,7 +87,7 @@ Overall, we do the same process (creating and inserting certificates into the ke
 
 ### Certificates
 
-* Key Store als for Clients
+* Key Store also for Clients
 
 ### Configure Kafka Brokers
 
