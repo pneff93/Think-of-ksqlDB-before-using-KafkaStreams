@@ -64,6 +64,11 @@ kafka-console-producer  --broker-list broker-1:19094 --topic topic-1  --producer
 kafka-console-consumer --bootstrap-server broker-1:19094 --topic topic-1 --consumer.config SASL/client.properties --from-beginning
 ```
 
+### Authorization via ACLs
+
+A finger exercise is to configure ACLs for our user to send data or consume data from the broker. 
+A detailed explanation can be found [here](./ACL).
+
 ### Run pipeline
 
 To run the pipeline, choose either `SSL` or `SASL_SSL` by commenting 
@@ -81,6 +86,7 @@ Additional sources in order to work with Avro as a schema are:
 * [SSL Key creation](https://mariadb.com/docs/security/data-in-transit-encryption/create-self-signed-certificates-keys-openssl/)
 * [SSL Certificates creation](https://docs.confluent.io/platform/current/security/security_tutorial.html#configuring-host-name-verification)
 * [SASL](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html#auth-sasl-plain-broker-config)
+* [ACLs](https://docs.confluent.io/platform/current/kafka/authorization.html#operations)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/

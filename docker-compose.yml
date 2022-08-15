@@ -60,6 +60,10 @@ services:
               user_broker2="broker2-secret" \
               user_client="client-secret";
 
+      # ACLs
+#      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+#      KAFKA_SUPER_USERS: User:broker1;User:broker2
+
   broker-2:
     image: confluentinc/cp-enterprise-kafka:7.0.0
     hostname: broker-2
@@ -108,6 +112,10 @@ services:
               user_broker1="broker1-secret" \
               user_broker2="broker2-secret" \
               user_client="client-secret";
+
+      # ACLs
+#      KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+#      KAFKA_SUPER_USERS: User:broker1;User:broker2
 
   control-center:
      image: confluentinc/cp-enterprise-control-center:7.0.0
