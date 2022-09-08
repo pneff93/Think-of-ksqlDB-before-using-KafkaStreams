@@ -80,8 +80,6 @@ the configuration. Then run:
 
 ## Sources
 
-Additional sources in order to work with Avro as a schema are:
-
 * [Security Course](https://www.udemy.com/course/apache-kafka-security/)
 * [SSL Key creation](https://mariadb.com/docs/security/data-in-transit-encryption/create-self-signed-certificates-keys-openssl/)
 * [SSL Certificates creation](https://docs.confluent.io/platform/current/security/security_tutorial.html#configuring-host-name-verification)
