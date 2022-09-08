@@ -101,6 +101,12 @@ To see those logs follow the steps in the burger menu under Audit log:
 I then created a topic and could see it within the logs.
 It is encrypted in the [audit-logs.json.gpg](audit-logs.json.gpg) file.
 
+## Schema Linking
+
+Assume we created this pipeline on a staging environment.
+We want to migrate all the schemas to a production environment using Schema Linking.
+Check out [./SchemaLinking](SchemaLinking/README.md) for more information.
+
 ## Sources
 
 ### Schema Registry
@@ -121,6 +127,9 @@ Additional sources in order to work with Avro as a schema are:
 ### Audit Logs
 * [Quickstart](https://docs.confluent.io/cloud/current/monitoring/audit-logging/configure.html)
 * [Documentation](https://docs.confluent.io/platform/current/security/audit-logs/audit-logs-concepts.html)
+
+### Schema Linking
+* [Documentation](https://docs.confluent.io/cloud/current/sr/schema-linking.html)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
