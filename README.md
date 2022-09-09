@@ -107,6 +107,8 @@ Assume we created this pipeline on a staging environment.
 We want to migrate all the schemas to a production environment using Schema Linking.
 Check out [./SchemaLinking](SchemaLinking/README.md) for more information.
 
+Also, Schema Linking can be used for Disaster Recovery (DR).
+
 ## Sources
 
 ### Schema Registry
