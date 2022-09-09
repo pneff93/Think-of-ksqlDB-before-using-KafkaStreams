@@ -1,3 +1,4 @@
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.config.SaslConfigs
@@ -24,6 +25,7 @@ class ProducerProperties {
         settings.setProperty("schema.registry.url", "<Schema Registry Endpoint>")
         settings.setProperty("basic.auth.credentials.source", "USER_INFO")
         settings.setProperty("schema.registry.basic.auth.user.info", "<Key>:<Secret>")
+        settings[AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS] = false
 
         return settings
     }
