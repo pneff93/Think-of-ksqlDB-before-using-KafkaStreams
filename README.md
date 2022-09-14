@@ -101,6 +101,11 @@ To see those logs follow the steps in the burger menu under Audit log:
 I then created a topic and could see it within the logs.
 It is encrypted in the [audit-logs.json.gpg](audit-logs.json.gpg) file.
 
+## Cluster Linking
+
+We use Cluster Linking to duplicate the data on a second cluster for Disaster Recovery (DR).
+Check out [./ClusterLinking](ClusterLinking/README.md) for more information.
+
 ## Schema Linking
 
 Assume we created this pipeline on a staging environment.
@@ -129,6 +134,9 @@ Additional sources in order to work with Avro as a schema are:
 ### Audit Logs
 * [Quickstart](https://docs.confluent.io/cloud/current/monitoring/audit-logging/configure.html)
 * [Documentation](https://docs.confluent.io/platform/current/security/audit-logs/audit-logs-concepts.html)
+
+### Cluster Linking
+* [Documentation](https://docs.confluent.io/cloud/current/multi-cloud/cluster-linking/index.html)
 
 ### Schema Linking
 * [Documentation](https://docs.confluent.io/cloud/current/sr/schema-linking.html)
