@@ -2,7 +2,7 @@ version: '2'
 services:
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.0
+    image: confluentinc/cp-zookeeper:7.2.0
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -12,7 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-enterprise-kafka:7.0.0
+    image: confluentinc/cp-server:7.2.0
     hostname: broker
     container_name: broker
     depends_on:
@@ -37,9 +37,10 @@ services:
       KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
       KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 5000
       KAFKA_JMX_PORT: 9991
+      KAFKA_PASSWORD_ENCODER_SECRET: encoder-secret
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.0.0
+    image: confluentinc/cp-schema-registry:7.2.0
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -52,7 +53,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:7.0.0
+    image: confluentinc/cp-ksqldb-server:7.2.0
     hostname: ksqldb-server
     container_name: ksqldb-server
     depends_on:
@@ -75,7 +76,7 @@ services:
         -Dcom.sun.management.jmxremote.rmi.port=1099
 
   ksqldb-cli:
-    image: confluentinc/cp-ksqldb-cli:7.0.0
+    image: confluentinc/cp-ksqldb-cli:7.2.0
     container_name: ksqldb-cli
     depends_on:
       - ksqldb-server
@@ -83,7 +84,7 @@ services:
     tty: true
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:7.0.0
+    image: confluentinc/cp-enterprise-control-center:7.2.0
     hostname: control-center
     container_name: control-center
     depends_on:
@@ -110,25 +111,3 @@ services:
     depends_on:
       - broker
       - schema-registry
-
-  prometheus:
-    image: prom/prometheus:main
-    hostname: prometheus
-    container_name: prometheus
-    ports:
-      - 9090:9090
-    volumes:
-      - ./Metrics/prometheus:/etc/prometheus
-
-  jmx-exporter:
-    image: sscaling/jmx-prometheus-exporter:0.12.0
-    container_name: jmx-exporter
-    hostname: jmx-exporter
-    ports:
-      - 5556:5556
-    depends_on:
-      - broker
-    environment:
-      CONFIG_YML: "/etc/jmx_exporter/config.yml"
-    volumes:
-      - ./Metrics/jmx-exporter/jmx-exporter.yml:/etc/jmx_exporter/config.yml

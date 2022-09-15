@@ -6,27 +6,35 @@ A streaming data pipeline typically consists of data transformation, wrangling, 
 
 This repository was used in a Confluent meetup. You can watch the recording in the [Community Forum](https://forum.confluent.io/t/recording-ready-to-view-speaker-q-a-thread-30-march-2022-think-of-using-ksqldb-before-using-kafka-streams/4450).
 
-**In the meanwhile this repo became a playground for different ways of
-deployment. You can find them under different branches. Currently,
-this pipeline can be deployed:**
-* **locally with Docker (main)**
-* **on Confluent Cloud**
-* **with Confluent for Kubernetes using Minikube**
-* **locally but (most components) secured with Docker**
-
 ![](image.png)
 
 
-## Run locally with Docker
+## Run on a Hybrid Environment
 
-Start entire Kafka environment with:
+We will run this pipeline locally but then use Cluster Linking to transfer the data into Confluent
+Cloud. A possible scenario would be a sensor not having internet connection all the time.
+We ensure that the data can be analyzed locally but for bigger analytics or disaster recovery, it is 
+also transferred to CC once it has a stable connectivity.
+
+We follow this [tutorial](https://docs.confluent.io/cloud/current/multi-cloud/cluster-linking/hybrid-cc.html#mirror-data-from-on-premises-to-ccloud).
+Ensure to have a dedicated Confluent Cloud cluster running.
+
+![](ClusterLinking.png)
+
+### Start running locally with Docker
+
+We need to set:
+```yaml
+KAFKA_PASSWORD_ENCODER_SECRET: encoder-secret
+```
+Then start the entire Kafka environment with:
 ```shell
 docker-compose up -d
 ```
 We can then see the data flow in the control center under:
-```localhost:9021```. 
+```localhost:9021```.
 
-### Kafka Streams
+#### Kafka Streams
 
 We use [Gradle](https://gradle.org/) to build and run the Kafka Streams application:
 
@@ -34,64 +42,56 @@ We use [Gradle](https://gradle.org/) to build and run the Kafka Streams applicat
 ./gradlew run
 ```
 
-### ksqlDB
+### Create Cluster Link in the dedicated cluster in CC
 
-In order to execute all statements, we need to open the ksqlDB client with:
+We need the clusterId from our local environment:
+```shell
+kafka-cluster cluster-id --bootstrap-server localhost:9092
+```
+We need the clusterId from the dedicated CC cluster (navigate to the environment and cluster):
+```shell
+confluent kafka cluster describe
+```
+We create the cluster link by providing an additional configuration file.
+More information about the configuration can be found in the [documentation](https://docs.confluent.io/platform/current/multi-dc-deployments/cluster-linking/configs.html#configuration-options).
 
 ```shell
-docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
+confluent kafka link create from-on-prem-link \
+--cluster <CC Cluster Id> \
+--source-cluster-id <CP Cluster Id> \
+--config-file ./ClusterLinking/CloudClusterLinkConfig.txt
 ```
 
-## Metrics
+### Create Cluster Link in your local environment
 
-_Note: Metrics have been added to this repository after the Meetup.
-For a great repository containing metrics as well as the visualization with
-Grafana, I refer to [kafka-platform-prometheus](https://github.com/jeanlouisboudart/kafka-platform-prometheus)._
-
-In order, to see some insight metrics we distinguish between Confluent Metrics Reporter and
-JMX (Java Management Extensions).
-
-### Confluent Metrics Reporter
-
-Simply add parameters to the environment of the broker.
-
+We first need to create an API Key, so that we can authenticate the cluster link at CC.
 ```shell
-KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
-CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+confluent api-key create --resource <CC Cluster Id>
 ```
-We then can see a dashboard in the control-center (`localhost:9021`):
+We create the cluster link by providing an additional configuration file.
+Do not add any cluster link configurations (such as consumer offset sync or auto-create mirror topics) to 
+LocalConfig.txt.
+These configurations must be set on the destination’s cluster link 
+(not the Source cluster’s cluster link).
+```shell
+kafka-cluster-links --bootstrap-server localhost:9092 \
+--create --link from-on-prem-link \
+--config-file ./ClusterLinking/LocalClusterLinkConfig.txt \
+--cluster-id <CC Cluster Id>
+```
 
-![](./Metrics/control-center.png)
+### Validate the Cluster Linking
+It may take some time until all mirror topics are created. However, finally you can see the 
+data also running in Confluent Cloud.
 
+![](MirrorTopic.png)
 
-### JMX
-
-We can export metrics from the broker and/or ksqlDB by adjusting related parameters in the
-docker-compose file. Open `jconsole` and see those metrics.
-With the JMX-exporter, we export desired metrics so that we finally can scrape them with
-Prometheus. A possible extension might be using Grafana to visualize the metrics in a 
-dashboard. However, we focussed here more on only exposing rather than using.
-
-We can either monitor all metrics under `localhost:5556` from the JXM-exporter
-or in Prometheus under `localhost:9090`.
-
-I used the code from the [streamthoughts GitHub repository](https://github.com/streamthoughts/kafka-monitoring-stack-docker-compose/tree/master/etc/jmx_exporter)
-for exporting the metrics.
 
 ## Sources
 
-### Schema Registry
-Additional sources in order to work with Avro as a schema are:
+* [Tutorial Cluster Linking](https://docs.confluent.io/cloud/current/multi-cloud/cluster-linking/hybrid-cc.html#mirror-data-from-ccloud-to-on-premises)
+* [Cluster Link Configuration](https://docs.confluent.io/platform/current/multi-dc-deployments/cluster-linking/configs.html#configuration-options)
 
-* [Gradle Avro plugin](https://github.com/davidmc24/gradle-avro-plugin)
-* [Kafka Streams Avro Serde](https://docs.confluent.io/platform/current/streams/developer-guide/datatypes.html)
-* [ksqlDB Avro](https://docs.ksqldb.io/en/latest/reference/serialization/#avro)
-
-### Metrics
-* [Confluent Metrics Reporter](https://docs.confluent.io/platform/7.0.0/kafka/metrics-reporter.html#installation)
-* [Kafka Monitoring and Metrics using JMX](https://docs.confluent.io/platform/current/installation/docker/operations/monitoring.html)
-* [JMX Export ksqlDB](https://docs.ksqldb.io/en/latest/operate-and-deploy/monitoring/)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/

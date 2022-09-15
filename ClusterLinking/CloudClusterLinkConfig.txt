@@ -1,0 +1,5 @@
+link.mode=DESTINATION
+connection.mode=INBOUND
+
+auto.create.mirror.topics.enable=true
+auto.create.mirror.topics.filters={"topicFilters": [{"name": "*", "patternType": "LITERAL", "filterType": "INCLUDE"}]}
