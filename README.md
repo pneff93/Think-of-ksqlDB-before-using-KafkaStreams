@@ -13,6 +13,7 @@ this pipeline can be deployed:**
 * **on Confluent Cloud**
 * **with Confluent for Kubernetes using Minikube**
 * **locally but (most components) secured with Docker**
+* **hybrid via Cluster Linking from local to Confluent Cloud**
 
 ![](image.png)
 
