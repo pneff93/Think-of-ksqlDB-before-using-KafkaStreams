@@ -104,15 +104,20 @@ It is encrypted in the [audit-logs.json.gpg](audit-logs.json.gpg) file.
 ## Cluster Linking
 
 We use Cluster Linking to duplicate the data on a second cluster for Disaster Recovery (DR).
-Check out [./ClusterLinking](ClusterLinking/README.md) for more information.
+Check out [ClusterLinking](ClusterLinking/README.md) for more information.
 
 ## Schema Linking
 
 Assume we created this pipeline on a staging environment.
 We want to migrate all the schemas to a production environment using Schema Linking.
-Check out [./SchemaLinking](SchemaLinking/README.md) for more information.
+Check out [SchemaLinking](SchemaLinking/README.md) for more information.
 
 Also, Schema Linking can be used for Disaster Recovery (DR).
+
+## RBAC
+We use Role-Based Access Control (RBAC) to set a specific role binding
+to the corresponding Service Account. 
+Check out [RBAC](RBAC/README.md) for more information.
 
 ## Sources
 
@@ -140,6 +145,10 @@ Additional sources in order to work with Avro as a schema are:
 
 ### Schema Linking
 * [Documentation](https://docs.confluent.io/cloud/current/sr/schema-linking.html)
+
+### RBAC
+* [Documentation](https://docs.confluent.io/cloud/current/access-management/access-control/cloud-rbac.html#manage-rbac-using-the-confluent-cli)
+
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
