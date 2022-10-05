@@ -1,3 +1,4 @@
 CCloudCred.json
+ClusterLinking/secrets.json
 SchemaLinking/secrets.json
 audit-logs.json
