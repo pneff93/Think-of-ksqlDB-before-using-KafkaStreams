@@ -25,6 +25,13 @@ We use [Gradle](https://gradle.org/) to build and run the applications:
 ./gradlew run
 ```
 
+## Stream Lineage
+
+Confluent Cloud provides us the ability to see the data flow in a chart under 
+Stream Lineage:
+
+![](StreamLineage.png)
+
 ## Metrics API
 
 We can get metrics of the cluster (not clients) via the Metrics API. It provides two endpoints:
