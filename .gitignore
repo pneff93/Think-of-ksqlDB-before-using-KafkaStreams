@@ -2,6 +2,5 @@
 /.blackbox/pubring.kbx~
 /.blackbox/secring.gpg
 /CCloudCred.json
-/audit-logs.json
 /SchemaLinking/secrets.json
 /ClusterLinking/secrets.json

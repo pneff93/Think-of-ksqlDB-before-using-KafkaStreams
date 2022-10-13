@@ -1,3 +1,0 @@
-schema.registry.url=<destination sr url>
-basic.auth.credentials.source=USER_INFO
-basic.auth.user.info=<destination api key>:<destination api secret>
