@@ -12,14 +12,13 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-enterprise-kafka:7.0.0
+    image: confluentinc/cp-server:7.0.0
     hostname: broker
     container_name: broker
     depends_on:
       - zookeeper
     ports:
       - 9092:9092
-      - 9991:9991
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -30,13 +29,10 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      KAFKA_CONFLUENT_BALANCER_ENABLE: 'true'
-      KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
-      KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 5000
-      KAFKA_JMX_PORT: 9991
+      KAFKA_METRIC_REPORTERS: io.confluent.telemetry.reporter.TelemetryReporter
+      KAFKA_CONFLUENT_TELEMETRY_ENABLED: 'true'
+      KAFKA_CONFLUENT_TELEMETRY_API_KEY: <CLOUD API KEY>
+      KAFKA_CONFLUENT_TELEMETRY_API_SECRET: <CLOUD API SECRET>
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.0
@@ -50,6 +46,10 @@ services:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+      SCHEMA_REGISTRY_METRIC_REPORTERS: io.confluent.telemetry.reporter.TelemetryReporter
+      SCHEMA_REGISTRY_CONFLUENT_TELEMETRY_ENABLED: 'true'
+      SCHEMA_REGISTRY_CONFLUENT_TELEMETRY_API_KEY: <CLOUD API KEY>
+      SCHEMA_REGISTRY_CONFLUENT_TELEMETRY_API_SECRET: <CLOUD API SECRET>
 
   ksqldb-server:
     image: confluentinc/cp-ksqldb-server:7.0.0
@@ -66,13 +66,10 @@ services:
       KSQL_HOST_NAME: ksqldb-server
       KSQL_LISTENERS: "http://0.0.0.0:8088"
       KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
-      KSQL_JMX_OPTS: >
-        -Djava.rmi.server.hostname=localhost
-        -Dcom.sun.management.jmxremote
-        -Dcom.sun.management.jmxremote.port=1099
-        -Dcom.sun.management.jmxremote.authenticate=false
-        -Dcom.sun.management.jmxremote.ssl=false
-        -Dcom.sun.management.jmxremote.rmi.port=1099
+      KSQL_METRIC_REPORTERS: io.confluent.telemetry.reporter.TelemetryReporter
+      KSQL_CONFLUENT_TELEMETRY_ENABLED: 'true'
+      KSQL_CONFLUENT_TELEMETRY_API_KEY: <CLOUD API KEY>
+      KSQL_CONFLUENT_TELEMETRY_API_SECRET: <CLOUD API SECRET>
 
   ksqldb-cli:
     image: confluentinc/cp-ksqldb-cli:7.0.0
@@ -101,34 +98,8 @@ services:
       CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_METRIC_REPORTERS: io.confluent.telemetry.reporter.TelemetryReporter
+      CONTROL_CENTER_CONFLUENT_TELEMETRY_ENABLED: 'true'
+      CONTROL_CENTER_CONFLUENT_TELEMETRY_API_KEY: <CLOUD API KEY>
+      CONTROL_CENTER_CONFLUENT_TELEMETRY_API_SECRET: <CLOUD API SECRET>
       PORT: 9021
-
-  kafkaProducerMeetup22:
-    image: kafkaproducermeetup22:0.1.0
-    build: ./KafkaProducer
-    container_name: kafka-producer
-    depends_on:
-      - broker
-      - schema-registry
-
-  prometheus:
-    image: prom/prometheus:main
-    hostname: prometheus
-    container_name: prometheus
-    ports:
-      - 9090:9090
-    volumes:
-      - ./Metrics/prometheus:/etc/prometheus
-
-  jmx-exporter:
-    image: sscaling/jmx-prometheus-exporter:0.12.0
-    container_name: jmx-exporter
-    hostname: jmx-exporter
-    ports:
-      - 5556:5556
-    depends_on:
-      - broker
-    environment:
-      CONFIG_YML: "/etc/jmx_exporter/config.yml"
-    volumes:
-      - ./Metrics/jmx-exporter/jmx-exporter.yml:/etc/jmx_exporter/config.yml
