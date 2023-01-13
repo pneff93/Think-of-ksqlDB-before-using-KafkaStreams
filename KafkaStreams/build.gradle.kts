@@ -25,9 +25,10 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:2.12.0")
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.12.0")
 
-    implementation("org.apache.kafka:kafka-streams:3.0.0")
-    implementation("io.confluent:kafka-avro-serializer:7.0.0")
-    implementation("io.confluent:kafka-streams-avro-serde:5.2.1")
+    implementation("org.apache.kafka:kafka-streams:7.3.0-ce")
+    implementation("io.confluent:kafka-avro-serializer:7.3.0")
+    implementation("io.confluent:kafka-streams-avro-serde:7.3.0")
+    implementation("io.confluent:monitoring-interceptors:7.3.0")
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
