@@ -12,7 +12,7 @@ Cluster Linking, or enabling metrics. You can find them under different branches
 this pipeline can be deployed:**
 
 * [locally with Docker](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/local)
-  * with JMX metrics
+  * with C3 metrics
 * [locally secured with Docker](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/local_security)
   * SSL & SASL_SSL
 * [locally setting up Health+](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/local_health+)
