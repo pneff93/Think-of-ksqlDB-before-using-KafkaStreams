@@ -35,7 +35,7 @@ In order to execute all statements, we need to open the ksqlDB client with:
 docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
 ```
 
-## Metrics in Control Center
+## Metrics (Control Center & JMX)
 You can find more information in [Metrics](./Metrics).
 
 ## Sources

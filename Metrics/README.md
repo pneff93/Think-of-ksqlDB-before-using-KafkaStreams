@@ -46,3 +46,14 @@ settings[StreamsConfig.MAIN_CONSUMER_PREFIX + ConsumerConfig.INTERCEPTOR_CLASSES
 ````
 
 ![](client-metrics.png)
+
+# JMX Metrics
+
+We want to monitor the client versions via the JMX broker metrics as explained in [KIP-511](https://cwiki.apache.org/confluence/display/KAFKA/KIP-511%3A+Collect+and+Expose+Client%27s+Name+and+Version+in+the+Brokers#KIP511:CollectandExposeClient'sNameandVersionintheBrokers-ApiVersionsRequest/ResponseHandling.1).
+Therefore, we add additional components (node exporter and Prometheus) to the setup.
+More information can be found in the [jmx-monitoring-stacks repository](https://github.com/confluentinc/jmx-monitoring-stacks).
+
+We then enter Prometheus under `localhost:9090` and 
+see then the desired metrics under the name `kafka_server_socketservermetrics_connections`.
+
+![](kip511.png)

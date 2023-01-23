@@ -20,6 +20,8 @@ services:
     ports:
       - 9092:9092
       - 9991:9991
+    volumes:
+      - ./Metrics/jmx-exporter/:/usr/share/jmx-exporter
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -37,6 +39,8 @@ services:
       KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
       KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 5000
       KAFKA_JMX_PORT: 9991
+      EXTRA_ARGS:
+        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-0.16.1.jar=1234:/usr/share/jmx-exporter/broker.yml
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.3.0
@@ -112,3 +116,26 @@ services:
     depends_on:
       - broker
       - schema-registry
+
+  prometheus:
+    image: prom/prometheus:main
+    hostname: prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./Metrics/Prometheus:/etc/prometheus
+
+  node-exporter:
+    image: prom/node-exporter:v1.2.2
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--collector.filesystem.ignored-mount-points"
+      - "^(aufs|proc|nsfs|shm|cgroup|tmpfs|binfmt_misc|debugfs|devpts|fusectl|hugetlbfs|fuse.lxcfs|mqueue|pstore|securityfs|sysfs|autofs|devtmpfs|configfs)"
+
