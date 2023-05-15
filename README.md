@@ -65,16 +65,8 @@ We can then see the data flow in the control center under:
 
 ## Sources
 
-### Schema Registry
-Additional sources in order to work with Avro as a schema are:
-
-* [Gradle Avro plugin](https://github.com/davidmc24/gradle-avro-plugin)
-* [Kafka Streams Avro Serde](https://docs.confluent.io/platform/current/streams/developer-guide/datatypes.html)
-* [ksqlDB Avro](https://docs.ksqldb.io/en/latest/reference/serialization/#avro)
-
-### CFK
-* [Quickstart](https://docs.confluent.io/operator/current/co-quickstart.html)
-* [Deployment](https://stackoverflow.com/questions/42564058/how-to-use-local-docker-images-with-minikube)
+* [CFK Quickstart](https://docs.confluent.io/operator/current/co-quickstart.html)
+* [Minikube Deployment](https://stackoverflow.com/questions/42564058/how-to-use-local-docker-images-with-minikube)
 
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
