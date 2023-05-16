@@ -17,6 +17,7 @@ this pipeline can be deployed:**
   * SSL & SASL_SSL
 * [locally setting up Health+](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/local_health+)
 * [with Confluent for Kubernetes using Minikube](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/cfk_minikube)
+  * with Health+
 * [on Confluent Cloud](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/ccloud)
   * with Cluster Linking and Schema Linking
   * with RBAC
