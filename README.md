@@ -35,21 +35,23 @@ In order to execute all statements, we need to open the ksqlDB client with:
 docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
 ```
 
-## Metrics (Control Center & JMX)
-You can find more information in [Metrics](./Metrics).
+## C3 Mode
+We set the C3 mode to reduced infrastructure via
+```shell
+CONTROL_CENTER_MODE_ENABLE: "management"
+```
+This will reduce the number of internal topics and partitions from 54 to 6 and 114 to 66, respectively.
+
+![](c3_broker.png)
+![](c3_topic.png)
+
+
 
 ## Sources
 
-### Schema Registry
-Additional sources in order to work with Avro as a schema are:
 
-* [Gradle Avro plugin](https://github.com/davidmc24/gradle-avro-plugin)
-* [Kafka Streams Avro Serde](https://docs.confluent.io/platform/current/streams/developer-guide/datatypes.html)
-* [ksqlDB Avro](https://docs.ksqldb.io/en/latest/reference/serialization/#avro)
-
-### Metrics
-* [Confluent Metrics Reporter](https://docs.confluent.io/platform/7.0.0/kafka/metrics-reporter.html#installation)
-* [Metrics Interceptor](https://docs.confluent.io/platform/current/control-center/installation/clients.html)
+* [C3 Configuration](https://docs.confluent.io/platform/current/control-center/installation/configure-control-center.html#modes)
+* [C3 Mode Overview](https://docs.confluent.io/platform/current/control-center/index.html#reduced-infra-mode)
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
