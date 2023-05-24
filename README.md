@@ -16,6 +16,7 @@ this pipeline can be deployed:**
 * [locally secured with Docker](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/local_security)
   * SSL & SASL_SSL
 * [locally setting up Health+](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/local_health+)
+* [locally setting up with reduced infra mode for C3](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/local_c3_reduced)
 * [with Confluent for Kubernetes using Minikube](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/cfk_minikube)
   * with Health+
 * [on Confluent Cloud](https://github.com/pneff93/Think-of-ksqlDB-before-using-KafkaStreams/tree/ccloud)
