@@ -20,7 +20,7 @@ We can then see the data flow in the control center under:
 
 ### Kafka Producer & Kafka Streams
 
-We use [Gradle](https://gradle.org/) to build and run the Kafka Streams application:
+We use [Gradle](https://gradle.org/) to build and run the Kafka Producer and Streams application:
 
 ```shell
 ./gradlew run
@@ -43,6 +43,14 @@ KAFKA_CONFLUENT_TELEMETRY_ENABLED: 'true'
 KAFKA_CONFLUENT_TELEMETRY_API_KEY: <CLOUD API KEY>
 KAFKA_CONFLUENT_TELEMETRY_API_SECRET: <CLOUD API SECRET>
 ````
+
+### Metrics API
+
+You can also scrape the CP metrics using the CC Metrics API (Open Preview), see the [documentation](https://api.telemetry.confluent.cloud/docs#section/Object-Model/Datasets).
+Just request the endpoint `https://api.telemetry.confluent.cloud/v2/metrics/health-plus/query` and follow
+the [Metrics API documentation](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html#example-queries).
+
+
 
 ## Sources
 
