@@ -6,7 +6,7 @@ A streaming data pipeline typically consists of data transformation, wrangling, 
 
 This repository was used in a Confluent meetup. You can watch the recording in the [Community Forum](https://forum.confluent.io/t/recording-ready-to-view-speaker-q-a-thread-30-march-2022-think-of-using-ksqldb-before-using-kafka-streams/4450).
 
-> [!INFO]
+> [!NOTE]
 > In the meanwhile this repo became a playground for different ways of
 > deployment as well as exploring features such as 
 > Cluster Linking, or enabling metrics. You can find them under different branches
