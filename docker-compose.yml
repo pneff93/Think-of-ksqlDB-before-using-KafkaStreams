@@ -2,7 +2,7 @@ version: '2'
 services:
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.4.0
+    image: confluentinc/cp-zookeeper:7.6.0
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -12,7 +12,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-server:7.4.0
+    image: confluentinc/cp-server:7.6.0
     hostname: broker
     container_name: broker
     depends_on:
@@ -39,11 +39,10 @@ services:
       KAFKA_CONFLUENT_BALANCER_HEAL_UNEVEN_LOAD_TRIGGER: ANY_UNEVEN_LOAD
       KAFKA_CONFLUENT_BALANCER_HEAL_BROKER_FAILURE_THRESHOLD_MS: 5000
       KAFKA_JMX_PORT: 9991
-      EXTRA_ARGS:
-        -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-0.16.1.jar=1234:/usr/share/jmx-exporter/broker.yml
+      EXTRA_ARGS: -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-0.20.0.jar=1234:/usr/share/jmx-exporter/kafka_broker.yml
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.4.0
+    image: confluentinc/cp-schema-registry:7.6.0
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -56,7 +55,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:7.4.0
+    image: confluentinc/cp-ksqldb-server:7.6.0
     hostname: ksqldb-server
     container_name: ksqldb-server
     depends_on:
@@ -81,7 +80,7 @@ services:
         -Dcom.sun.management.jmxremote.rmi.port=1099
 
   ksqldb-cli:
-    image: confluentinc/cp-ksqldb-cli:7.4.0
+    image: confluentinc/cp-ksqldb-cli:7.6.0
     container_name: ksqldb-cli
     depends_on:
       - ksqldb-server
@@ -89,7 +88,7 @@ services:
     tty: true
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:7.4.0
+    image: confluentinc/cp-enterprise-control-center:7.6.0
     hostname: control-center
     container_name: control-center
     depends_on:
@@ -118,7 +117,7 @@ services:
       - schema-registry
 
   prometheus:
-    image: prom/prometheus:main
+    image: prom/prometheus:v2.47.2
     hostname: prometheus
     container_name: prometheus
     ports:
@@ -138,4 +137,18 @@ services:
       - "--path.sysfs=/host/sys"
       - "--collector.filesystem.ignored-mount-points"
       - "^(aufs|proc|nsfs|shm|cgroup|tmpfs|binfmt_misc|debugfs|devpts|fusectl|hugetlbfs|fuse.lxcfs|mqueue|pstore|securityfs|sysfs|autofs|devtmpfs|configfs)"
+
+  streams-demo:
+    image: streams-demo:0.1.0
+    build: ./KafkaStreams
+    container_name: streams-demo
+    hostname: streams-demo
+    depends_on:
+      - broker
+      - schema-registry
+      - prometheus
+    volumes:
+      - ./Metrics/jmx-exporter/:/usr/share/jmx-exporter
+    environment:
+      JAVA_OPTS: -javaagent:/usr/share/jmx-exporter/jmx_prometheus_javaagent-0.20.0.jar=1234:/usr/share/jmx-exporter/kafka_streams.yml
 
