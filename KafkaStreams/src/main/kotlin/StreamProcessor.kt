@@ -57,7 +57,7 @@ class StreamProcessor(properties: StreamProperties) {
             )
 
             // Transform
-            .mapValues { value -> convertTemperature(value) }                               // Fahrenheit -> Celsius
+            .mapValues ({ value -> convertTemperature(value) }, Named.`as`("temperatureConverter")     )                          // Fahrenheit -> Celsius
             .flatMapValues { value -> splitDataPoints(value) }                              // One event per data point
 
             // Group by new key

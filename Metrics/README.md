@@ -49,6 +49,7 @@ settings[StreamsConfig.MAIN_CONSUMER_PREFIX + ConsumerConfig.INTERCEPTOR_CLASSES
 
 # JMX Metrics
 
+## Broker
 We want to monitor the client versions via the JMX broker metrics as explained in [KIP-511](https://cwiki.apache.org/confluence/display/KAFKA/KIP-511%3A+Collect+and+Expose+Client%27s+Name+and+Version+in+the+Brokers#KIP511:CollectandExposeClient'sNameandVersionintheBrokers-ApiVersionsRequest/ResponseHandling.1).
 Therefore, we add additional components (node exporter and Prometheus) to the setup.
 More information can be found in the [jmx-monitoring-stacks repository](https://github.com/confluentinc/jmx-monitoring-stacks).
@@ -57,3 +58,17 @@ We then enter Prometheus under `localhost:9090` and
 see then the desired metrics under the name `kafka_server_socketservermetrics_connections`.
 
 ![](kip511.png)
+
+## Kafka Streams
+
+To get the metrics from the Kafka Streams application, we need to configure the corresponding JVM options in the [Dockerfile](../KafkaStreams/Dockerfile).
+
+Next to that, we again configure the JMX Exporter as well as Prometheus.
+You can find more information about it in [Configure JMX](https://docs.confluent.io/platform/current/kafka/monitoring.html#configure-jmx)
+and [Monitor Kafka Streams Applications in Confluent Platform](https://docs.confluent.io/platform/current/streams/monitoring.html).
+
+You get certain metrics per thread or even task (see picture below).
+Because our topology consists of two sub-topologies and our input topic has 1 partition, we end up
+with two tasks `[#topology, #partition]`
+
+![](kafkaStreamsMetrics.png)
