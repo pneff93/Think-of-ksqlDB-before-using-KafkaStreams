@@ -25,7 +25,7 @@ class KafkaProducer {
                 val sensorData = gson.fromJson(event, SensorData::class.java)
                 sensorData.setTimestamp(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.'SSS'Z'").format(Date()))
 
-                kafkaProducer.send(ProducerRecord("sensor-data-raw", sensorData.getSensorId(), sensorData))
+                kafkaProducer.send(ProducerRecord("team-a-raw", sensorData.getSensorId(), sensorData))
                 logger.info("Sensor data produced with value: $sensorData")
                 Thread.sleep(2000)
             }

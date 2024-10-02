@@ -25,6 +25,36 @@ We use [Gradle](https://gradle.org/) to build and run the applications:
 ./gradlew run
 ```
 
+## :star: Kafka Streams Addons
+
+### Naming 
+
+* [Documentation](https://docs.confluent.io/platform/current/streams/developer-guide/dsl-topology-naming.html)
+
+We name the processing steps in the topology resulting in a better readability:
+
+![](topology.png)
+
+### Application Reset Tool
+
+* [Documentation](https://docs.confluent.io/platform/current/streams/developer-guide/app-reset-tool.html#streams-developer-guide-app-reset)
+
+```
+kafka-streams-application-reset --application-id team-a-iot --bootstrap-servers pkc-5roon.us-east-1.aws.confluent.cloud:9092 --config-file client.properties --input-topics team-a-raw --shift-by -10 --internal-topics team-a-iot-store-changelog --dry-run
+
+----Dry run displays the actions which will be performed when running Streams Reset Tool----
+Reset-offsets for input topics [team-a-raw]
+Following input topics offsets will be reset to (for consumer group team-a-iot)
+New offset (-10) is lower than earliest offset. Value will be set to 0
+New offset (-10) is lower than earliest offset. Value will be set to 0
+Topic: team-a-raw Partition: 0 Offset: 70
+Topic: team-a-raw Partition: 1 Offset: 0
+Topic: team-a-raw Partition: 2 Offset: 0
+Done.
+Deleting specified internal topics [team-a-iot-store-changelog]
+Done.
+```
+
 ## Stream Lineage
 
 Confluent Cloud provides us the ability to see the data flow in a chart under 
@@ -126,37 +156,6 @@ We use Role-Based Access Control (RBAC) to set a specific role binding
 to the corresponding Service Account. 
 Check out [RBAC](RBAC/README.md) for more information.
 
-## Sources
-
-### Schema Registry
-Additional sources in order to work with Avro as a schema are:
-
-* [Gradle Avro plugin](https://github.com/davidmc24/gradle-avro-plugin)
-* [Kafka Streams Avro Serde](https://docs.confluent.io/platform/current/streams/developer-guide/datatypes.html)
-* [ksqlDB Avro](https://docs.ksqldb.io/en/latest/reference/serialization/#avro)
-
-### Confluent Cloud Config
-* [Config](https://docs.confluent.io/cloud/current/client-apps/config-client.html)
-
-### Metrics API
-* [Metrics Overview](https://docs.confluent.io/cloud/current/client-apps/monitoring.html)
-* [Examples](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html#query-for-bytes-sent-to-consumers-per-minute-grouped-by-topic)
-* [Integration Grafana Cloud](https://grafana.com/docs/grafana-cloud/integrations/integrations/integration-confluent-cloud/)
-
-### Audit Logs
-* [Quickstart](https://docs.confluent.io/cloud/current/monitoring/audit-logging/configure.html)
-* [Documentation](https://docs.confluent.io/platform/current/security/audit-logs/audit-logs-concepts.html)
-
-### Cluster Linking
-* [Documentation](https://docs.confluent.io/cloud/current/multi-cloud/cluster-linking/index.html)
-
-### Schema Linking
-* [Documentation](https://docs.confluent.io/cloud/current/sr/schema-linking.html)
-
-### RBAC
-* [Documentation](https://docs.confluent.io/cloud/current/access-management/access-control/cloud-rbac.html#manage-rbac-using-the-confluent-cli)
-
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrick-neff-7bb3b21a4/
-

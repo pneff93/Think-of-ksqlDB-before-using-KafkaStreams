@@ -3,10 +3,12 @@ import io.confluent.kafka.schemaregistry.client.SchemaRegistryClientConfig
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
 import org.apache.kafka.common.serialization.Serdes
+import org.apache.kafka.common.utils.Bytes
 import org.apache.kafka.streams.KafkaStreams
 import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.*
+import org.apache.kafka.streams.state.WindowStore
 import org.apache.logging.log4j.kotlin.logger
 import java.time.Duration
 import kotlin.math.roundToInt
@@ -42,6 +44,7 @@ class StreamProcessor(properties: StreamProperties) {
         serdeAggregatedData = SpecificAvroSerde<SensorDataAggregation>()
         serdeAggregatedData.configure(registryConfig, false)
 
+
         serdeAggregatedKey = SpecificAvroSerde<SensorDataAggregationKey>()
         serdeAggregatedKey.configure(registryConfig, true) // true because it's a key
 
@@ -57,34 +60,35 @@ class StreamProcessor(properties: StreamProperties) {
         // Consume
         processor
             .stream(
-                "sensor-data-raw",
+                "team-a-raw",
                 Consumed.with(Serdes.String(), serdeRawData)
             )
 
             // Transform
-            .mapValues { value -> convertTemperature(value) }                               // Fahrenheit -> Celsius
-            .flatMapValues { value -> splitDataPoints(value) }                              // One event per data point
+            .mapValues ({ value -> convertTemperature(value) }, Named.`as`("convertToCelsius")  )                // Fahrenheit -> Celsius
+            .flatMapValues ({ value -> splitDataPoints(value) }, Named.`as`("splitDataPoints") )                 // One event per data point
 
             // Group by new key
             .groupBy(
                 { _, value -> SensorDataAggregationKey(value.getSensorId(), value.getType()) },
-                Grouped.with(serdeAggregatedKey, serdeSingleData)                           // -> repartition topic
-            )
+                Grouped.`as`<SensorDataAggregationKey?, SensorDataPerValue?>("group")
+                    .withKeySerde(serdeAggregatedKey).withValueSerde(serdeSingleData))                          // -> repartition topic
 
             // Aggregate over hopping window
             .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMillis(windowSizeInMillis)))
             .aggregate(
                 { SensorDataPreAggregation(0.0, 0, "", "") },      // dummy initializer
                 { _, value, aggregate -> aggregateEvents(value, aggregate) },                // calculate sum and count
-                Materialized.with(serdeAggregatedKey, serdePreAggregatedData)                // -> changelog topic
+                Materialized.`as`<SensorDataAggregationKey?, SensorDataPreAggregation?, WindowStore<Bytes, ByteArray>?>("store")
+                    .withKeySerde(serdeAggregatedKey).withValueSerde(serdePreAggregatedData) // -> changelog topic
             )
-            .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))
+            .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()).withName("suppressUpdate"))
             .toStream()
-            .mapValues { value -> calculateAverage(value) }                                 // calculate average
+            .mapValues ({ value -> calculateAverage(value) }, Named.`as`("calculateAverage")    )                             // calculate average
 
             // Produce
             .to(
-                "sensor-data-aggregation-streams",
+                "team-a-aggregation",
                 Produced.with(
                     WindowedSerdes.TimeWindowedSerde(serdeAggregatedKey, windowSizeInMillis),   // key serde
                     serdeAggregatedData                                                         // value serde
